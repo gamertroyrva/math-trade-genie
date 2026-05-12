@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025 End of Summer Math Trade — Loop Results</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --bg:      #0a0c10;
+    --bg2:     #111318;
+    --bg3:     #181c24;
+    --gold:    #c8a84b;
+    --gold2:   #e8d08a;
+    --teal:    #3db8c0;
+    --rose:    #c05a6a;
+    --muted:   #4a5060;
+    --text:    #e2ddd4;
+    --dim:     #8a8478;
+    --border:  #222630;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* COVER */
+  #cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 40px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #cover::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 15% 20%, rgba(200,168,75,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 85% 80%, rgba(61,184,192,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .cover-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+    opacity: 0.7;
+  }
+
+  .cover-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 8vw, 90px);
+    font-weight: 700;
+    line-height: 1.0;
+    text-align: center;
+    margin-bottom: 8px;
+    color: var(--gold2);
+    letter-spacing: -0.01em;
+  }
+
+  .cover-sub {
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 80px;
+  }
+
+  .cover-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+    max-width: 900px;
+    margin-bottom: 60px;
+  }
+
+  .cover-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    opacity: 0.85;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+
+  .cover-cell:hover { opacity: 1; transform: scale(1.05); }
+
+  .cover-cell-label {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+
+  .scroll-hint {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+
+  /* DIVIDER */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0;
+  }
+
+  /* LOOP SECTIONS */
+  .loop-section {
+    padding: 80px 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .loop-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 48px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .loop-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 64px;
+    font-weight: 700;
+    color: var(--border);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    user-select: none;
+  }
+
+  .loop-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--gold2);
+  }
+
+  .loop-meta {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--dim);
+    text-transform: uppercase;
+  }
+
+  .loop-badge {
+    margin-left: auto;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal);
+    border: 1px solid var(--teal);
+    padding: 4px 10px;
+    opacity: 0.7;
+  }
+
+  /* CIRCLE DIAGRAM */
+  .diagram-wrap {
+    display: flex;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .diagram-wrap svg { overflow: visible; }
+
+  /* TEXT LIST */
+  .trade-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .trade-row {
+    display: grid;
+    grid-template-columns: 40px 1fr 2fr 1fr;
+    gap: 16px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .trade-row:hover { background: rgba(255,255,255,0.02); }
+
+  .trade-idx {
+    font-size: 10px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  .trade-giver {
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .trade-game {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  .trade-receiver {
+    font-size: 12px;
+    color: var(--teal);
+    font-weight: 500;
+  }
+</style>
+</head>
+<body>
+
+<div id="cover">
+  <div class="cover-eyebrow">BoardGameGeek · Richmond VA · No-Ship</div>
+  <h1 class="cover-title">2025 End of Summer Math Trade</h1>
+  <div class="cover-sub">572 total trades &nbsp;&middot;&nbsp; 8 loops &nbsp;&middot;&nbsp; 55 participants</div>
+  <div class="cover-grid" id="coverGrid"></div>
+  <div class="scroll-hint">&#8595; &nbsp; scroll to explore each loop &nbsp; &#8595;</div>
+</div>
+
+<div class="divider"></div>
+<div id="loopsWrapper"></div>
+
+<script>
+const LOOPS = [
+  { n: 1, trades: [
+    ["Bizbbiz", "Alt Name: 7 Wonders Duel 3D Print Insert", "LostChord_Mark"],
+    ["LostChord_Mark", "Memoir '44: Operation Overlord", "wonko101010"],
+    ["wonko101010", "The Manhattan Project: Energy Empire", "Bizbbiz"]
+  ]},
+  { n: 2, trades: [
+    ["Bizbbiz", "Weather Machine", "ViperMan"],
+    ["ViperMan", "ISS Vanguard", "kristybeardesigns"],
+    ["kristybeardesigns", "Arydia: The Paths We Dare Tread", "Bizbbiz"]
+  ]},
+  { n: 3, trades: [
+    ["chesschiefy", "Alt Name: $10 Cash/PayPal/Venmo", "weblawlib"],
+    ["weblawlib", "Canterbury", "Ska_baron"],
+    ["Ska_baron", "Catacombs & Castles (Second Edition)", "drgphx"],
+    ["drgphx", "Evergreen", "DadDialTone"],
+    ["DadDialTone", "Alt Name: $20 Cash/PayPal/Venmo", "paszkib2000"],
+    ["paszkib2000", "Santa Monica", "Stealthshade"],
+    ["Stealthshade", "Gùgōng", "scninmer08"],
+    ["scninmer08", "Alt Name: $15 Cash/PayPal/Venmo", "paszkib2000"],
+    ["paszkib2000", "Black Sonata", "Rickdey55"],
+    ["Rickdey55", "Prehistory", "GammaGoblinz"],
+    ["GammaGoblinz", "Tyrants of the Underdark", "Leapster"],
+    ["Leapster", "Abomination: The Heir of Frankenstein", "Rickdey55"],
+    ["Rickdey55", "Century: A New World", "chesschiefy"]
+  ]},
+  { n: 4, trades: [
+    ["beardnweird", "Earth", "longhunter"],
+    ["longhunter", "Alt Name: $20 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Imperial Steam", "QuantumMachina"],
+    ["QuantumMachina", "Ticket to Ride", "chesschiefy"],
+    ["chesschiefy", "Alt Name: $10 Cash/PayPal/Venmo", "Sebastian_delima"],
+    ["Sebastian_delima", "ICECOOL", "lewistc2"],
+    ["lewistc2", "Monumental", "Protoclown77"],
+    ["Protoclown77", "Fortune and Glory: The Cliffhanger Game", "getsumaiki"],
+    ["getsumaiki", "Tapestry", "RiVirCon"],
+    ["RiVirCon", "Mandala Stones", "Krudly"],
+    ["Krudly", "Favor of the Pharaoh", "LostChord_Mark"],
+    ["LostChord_Mark", "Port Royal: Big Box", "wonko101010"],
+    ["wonko101010", "Alma Mater", "weblawlib"],
+    ["weblawlib", "Tokyo Highway", "teabo"],
+    ["teabo", "Puerto Rico", "kkornblum14"],
+    ["kkornblum14", "18 Holes", "Rickdey55"],
+    ["Rickdey55", "Pit", "wonko101010"],
+    ["wonko101010", "Subastral", "Sebastian_delima"],
+    ["Sebastian_delima", "Land vs Sea", "USACelt"],
+    ["USACelt", "The Initiative", "Krudly"],
+    ["Krudly", "7 Wonders", "carbondrewtonium"],
+    ["carbondrewtonium", "A Gentle Rain", "DadDialTone"],
+    ["DadDialTone", "Alt Name: $10 Cash/PayPal/Venmo", "paszkib2000"],
+    ["paszkib2000", "Sushi Go Party!", "beardnweird"],
+    ["beardnweird", "HiFi", "Sebastian_delima"],
+    ["Sebastian_delima", "Catch the Moon", "Stealthshade"],
+    ["Stealthshade", "Cartographers Heroes", "beardnweird"]
+  ]},
+  { n: 5, trades: [
+    ["beardnweird", "Brazil: Imperial", "Leapster"],
+    ["Leapster", "Carnegie", "magusfool"],
+    ["magusfool", "Alt Name: $20 Cash/PayPal/Venmo", "Knize"],
+    ["Knize", "Awkward Guests: The Walton Case", "wonko101010"],
+    ["wonko101010", "Goblin Vaults", "roufus"],
+    ["roufus", "Res Arcana", "wonko101010"],
+    ["wonko101010", "Islebound", "Phippsrx"],
+    ["Phippsrx", "Furnace", "QuantumMachina"],
+    ["QuantumMachina", "Alt Name: $5 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "La Isla", "teabo"],
+    ["teabo", "Civilization", "scninmer08"],
+    ["scninmer08", "Alt Name: $30 Cash/PayPal/Venmo", "LostChord_Mark"],
+    ["LostChord_Mark", "Fuji Koro", "Sebastian_delima"],
+    ["Sebastian_delima", "Anno 1800: The Board Game", "BoardGames3000"],
+    ["BoardGames3000", "Unfair", "LostChord_Mark"],
+    ["LostChord_Mark", "Expeditions: Gears of Corruption", "scninmer08"],
+    ["scninmer08", "Alt Name: $20 Cash/PayPal/Venmo", "spider1502"],
+    ["spider1502", "Cities", "wonko101010"],
+    ["wonko101010", "Terrors of London", "GammaGoblinz"],
+    ["GammaGoblinz", "Potion Explosion", "LostChord_Mark"],
+    ["LostChord_Mark", "An Attrition of Souls", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $10 Cash/Paypal/Venmo", "LostChord_Mark"],
+    ["LostChord_Mark", "The Island of Doctor Lucky", "deflagratio1"],
+    ["deflagratio1", "Pandemic", "chesschiefy"],
+    ["chesschiefy", "Azul: Summer Pavilion", "Knize"],
+    ["Knize", "Dice Throne: Season Two – Cursed Pirate v. Artificer", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $10 Cash/Paypal/Venmo", "scninmer08"],
+    ["scninmer08", "War of the Ring: The Card Game", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $10 Cash/Paypal/Venmo", "Knize"],
+    ["Knize", "Legendary: A Marvel Deck Building Game", "DadDialTone"],
+    ["DadDialTone", "Viscounts of the West Kingdom", "beardnweird"]
+  ]},
+  { n: 6, trades: [
+    ["atanner12", "Star Wars: Imperial Assault", "Leapster"],
+    ["Leapster", "Storm Raiders", "roufus"],
+    ["roufus", "Dwellings of Eldervale", "jtimmerman"],
+    ["jtimmerman", "Dark Rituals: Malleus Maleficarum", "drgphx"],
+    ["drgphx", "Lisboa", "Leapster"],
+    ["Leapster", "The Great Wall", "drgphx"],
+    ["drgphx", "La Fleur", "Sebastian_delima"],
+    ["Sebastian_delima", "Detective: City of Angels", "OlBlue"],
+    ["OlBlue", "The Great Wall", "magusfool"],
+    ["magusfool", "Sleeping Gods", "QuantumMachina"],
+    ["QuantumMachina", "Let's Go! To Japan", "paregmenon"],
+    ["paregmenon", "Oceans", "DadDialTone"],
+    ["DadDialTone", "Robinson Crusoe: Adventures on the Cursed Island", "Krudly"],
+    ["Krudly", "Harry Potter: Hogwarts Battle", "OlBlue"],
+    ["OlBlue", "Pax Renaissance: 2nd Edition", "QuantumMachina"],
+    ["QuantumMachina", "Abducktion", "Sebastian_delima"],
+    ["Sebastian_delima", "Dog Park", "GammaGoblinz"],
+    ["GammaGoblinz", "Murano: Complete Edition", "Leapster"],
+    ["Leapster", "The Quest for El Dorado", "wonko101010"],
+    ["wonko101010", "Chimera Station", "beardnweird"],
+    ["beardnweird", "An Age Contrived", "drgphx"],
+    ["drgphx", "Edge of Darkness", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $60 Cash/Paypal/Venmo", "QuantumMachina"],
+    ["QuantumMachina", "Blood Rage", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $40 Cash/Paypal/Venmo", "beardnweird"],
+    ["beardnweird", "Tekhenu: Obelisk of the Sun", "drgphx"],
+    ["drgphx", "Imperium: The Contention", "magusfool"],
+    ["magusfool", "Alt Name: $50 Cash/PayPal/Venmo", "Bizbbiz"],
+    ["Bizbbiz", "Terracotta Army", "ViperMan"],
+    ["ViperMan", "Maracaibo", "Leapster"],
+    ["Leapster", "Vagrantsong", "Protoclown77"],
+    ["Protoclown77", "Small World Underground", "longhunter"],
+    ["longhunter", "Alt Name: $15 Cash/PayPal/Venmo", "beardnweird"],
+    ["beardnweird", "Beacon Patrol", "drgphx"],
+    ["drgphx", "Tiny Epic Quest", "kristybeardesigns"],
+    ["kristybeardesigns", "Descent: Legends of the Dark", "atanner12"]
+  ]},
+  { n: 7, trades: [
+    ["Astute_Asian", "Red Rising", "Protoclown77"],
+    ["Protoclown77", "Moonshiners of the Apocalypse", "Leapster"],
+    ["Leapster", "Targi", "chesschiefy"],
+    ["chesschiefy", "Alt Name: $5 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Herbalism", "drgphx"],
+    ["drgphx", "Bear Raid", "wonko101010"],
+    ["wonko101010", "Undaunted: North Africa", "GammaGoblinz"],
+    ["GammaGoblinz", "Bios: Genesis", "magusfool"],
+    ["magusfool", "Alt Name: $10 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Unlock! Kids: Irish Folklore Trilogy", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $5 Cash/Paypal/Venmo", "scninmer08"],
+    ["scninmer08", "Deja Vu: Fragments of Memory", "Sebastian_delima"],
+    ["Sebastian_delima", "Planta Nubo", "badfish20"],
+    ["badfish20", "Circadians: First Light", "Sebastian_delima"],
+    ["Sebastian_delima", "Treasure Island", "SnowyGoat85"],
+    ["SnowyGoat85", "Alt Name: Scifi Fluxx Bundle", "deflagratio1"],
+    ["deflagratio1", "Dragon's Gold", "teabo"],
+    ["teabo", "Lost Cities", "kkornblum14"],
+    ["kkornblum14", "Pan Am", "wonko101010"],
+    ["wonko101010", "Seize the Bean", "Leapster"],
+    ["Leapster", "Endeavor: Age of Sail", "beardnweird"],
+    ["beardnweird", "Bora Bora", "QuantumMachina"],
+    ["QuantumMachina", "Santa Maria", "roufus"],
+    ["roufus", "Tales of the Arabian Nights", "drgphx"],
+    ["drgphx", "Res Arcana", "BoardGames3000"],
+    ["BoardGames3000", "Jamaica", "GammaGoblinz"],
+    ["GammaGoblinz", "Iberian Gauge", "longhunter"],
+    ["longhunter", "Alt Name: $10 Cash/PayPal/Venmo", "deflagratio1"],
+    ["deflagratio1", "Cosmic Encounter", "Knize"],
+    ["Knize", "Trekking the National Parks", "paszkib2000"],
+    ["paszkib2000", "ALIEN: Fate of the Nostromo", "Protoclown77"],
+    ["Protoclown77", "Hippocrates", "drgphx"],
+    ["drgphx", "Arborea", "beardnweird"],
+    ["beardnweird", "Tabriz", "Leapster"],
+    ["Leapster", "Viticulture Essential Edition", "USACelt"],
+    ["USACelt", "Food Chain Island", "paszkib2000"],
+    ["paszkib2000", "Pocket Landship", "LostChord_Mark"],
+    ["LostChord_Mark", "Aeon's End: War Eternal", "Rickdey55"],
+    ["Rickdey55", "Western Legends", "SneekyCarrot"],
+    ["SneekyCarrot", "Snowdonia: Deluxe Master Set", "QuantumMachina"],
+    ["QuantumMachina", "Alt Name: $30 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Bebop", "Sebastian_delima"],
+    ["Sebastian_delima", "An Age Contrived", "GammaGoblinz"],
+    ["GammaGoblinz", "Carnegie", "Phippsrx"],
+    ["Phippsrx", "Great Western Trail: Argentina", "Leapster"],
+    ["Leapster", "Lost Ruins of Arnak", "longhunter"],
+    ["longhunter", "Alt Name: $15 Cash/PayPal/Venmo", "Astute_Asian"]
+  ]},
+  { n: 8, trades: [
+    ["alexandraaplus", "Dr. Eureka", "getsumaiki"],
+    ["getsumaiki", "Steam Up: A Feast of Dim Sum", "kristybeardesigns"],
+    ["kristybeardesigns", "Santorini", "RiVirCon"],
+    ["RiVirCon", "Seeland", "beardnweird"],
+    ["beardnweird", "Kiwi Chow Down", "DadDialTone"],
+    ["DadDialTone", "Alt Name: $10 Cash/PayPal/Venmo", "wonko101010"],
+    ["wonko101010", "Ladder 29", "Sebastian_delima"],
+    ["Sebastian_delima", "Alt Name: Small Card Game Bundle 2", "Stealthshade"],
+    ["Stealthshade", "Through the Desert", "DadDialTone"],
+    ["DadDialTone", "Alt Name: $20 Cash/PayPal/Venmo", "beardnweird"],
+    ["beardnweird", "Lions of Lydia", "LostChord_Mark"],
+    ["LostChord_Mark", "Sand", "Sebastian_delima"],
+    ["Sebastian_delima", "Alt Name: Escape Room Games Bundle", "KevinDice"],
+    ["KevinDice", "First Martians: Adventures on the Red Planet", "badfish20"],
+    ["badfish20", "Oros", "kristybeardesigns"],
+    ["kristybeardesigns", "Hive", "chesschiefy"],
+    ["chesschiefy", "Alt Name: $10 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Bruxelles 1897", "longhunter"],
+    ["longhunter", "Alt Name: $5 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "SteamRollers", "wonko101010"],
+    ["wonko101010", "Bohnanza", "longhunter"],
+    ["longhunter", "Alt Name: $5 Cash/PayPal/Venmo", "Sebastian_delima"],
+    ["Sebastian_delima", "ICECOOL", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $10 Cash/Paypal/Venmo", "GammaGoblinz"],
+    ["GammaGoblinz", "Magic Maze", "Stealthshade"],
+    ["Stealthshade", "Genotype: A Mendelian Genetics Game", "alexandraaplus"],
+    ["alexandraaplus", "Fog of Love", "ViperMan"],
+    ["ViperMan", "Kraftwagen: Age of Engineering", "Bizbbiz"],
+    ["Bizbbiz", "Alt Name: 10$ PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "9 Lives", "Sebastian_delima"],
+    ["Sebastian_delima", "Onitama", "chesschiefy"],
+    ["chesschiefy", "Alt Name: $10 Cash/PayPal/Venmo", "LostChord_Mark"],
+    ["LostChord_Mark", "New York Zoo", "Astute_Asian"],
+    ["Astute_Asian", "King of Tokyo: Origins", "roufus"],
+    ["roufus", "Marco Polo II: In the Service of the Khan", "beardnweird"],
+    ["beardnweird", "Unstoppable", "Rickdey55"],
+    ["Rickdey55", "Arcs", "roufus"],
+    ["roufus", "Valor & Villainy: Lludwik's Labyrinth", "atanner12"],
+    ["atanner12", "G.I. JOE Mission Critical", "LostChord_Mark"],
+    ["LostChord_Mark", "Claustrophobia", "Rickdey55"],
+    ["Rickdey55", "Maple Valley", "beardnweird"],
+    ["beardnweird", "The Red Cathedral", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $10 Cash/Paypal/Venmo", "Sebastian_delima"],
+    ["Sebastian_delima", "Calimala", "beardnweird"],
+    ["beardnweird", "Ethnos: 2nd Edition", "BoardGames3000"],
+    ["BoardGames3000", "Alt Name: $20 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Dice Realms", "Sebastian_delima"],
+    ["Sebastian_delima", "Monsters on Board", "Rickdey55"],
+    ["Rickdey55", "Anachrony", "beardnweird"],
+    ["beardnweird", "The Oracle of Delphi", "wonko101010"],
+    ["wonko101010", "City of Iron: Second Edition", "beardnweird"],
+    ["beardnweird", "Witchstone", "LostChord_Mark"],
+    ["LostChord_Mark", "Dead of Winter: A Crossroads Game", "Stealthshade"],
+    ["Stealthshade", "Deep Sea Adventure", "badfish20"],
+    ["badfish20", "Drawn to Adventure", "kristybeardesigns"],
+    ["kristybeardesigns", "Rivet Wars: Eastern Front", "Leapster"],
+    ["Leapster", "Prêt-à-Porter", "Stealthshade"],
+    ["Stealthshade", "Imperial Settlers", "mhinto"],
+    ["mhinto", "Carcassonne", "chesschiefy"],
+    ["chesschiefy", "Alt Name: $10 Cash/PayPal/Venmo", "spider1502"],
+    ["spider1502", "Set a Watch: Swords of the Coin", "atanner12"],
+    ["atanner12", "Once Upon a Time: The Storytelling Card Game", "Ska_baron"],
+    ["Ska_baron", "Alt Name: 5 Card Game Bundle", "badfish20"],
+    ["badfish20", "Seaside", "USACelt"],
+    ["USACelt", "Harry Potter: Hogwarts Battle", "Ska_baron"],
+    ["Ska_baron", "Leaf", "Bone_sense"],
+    ["Bone_sense", "Trekking the World", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $20 Cash/Paypal/Venmo", "Knize"],
+    ["Knize", "Puerto Rico", "ethanparsley"],
+    ["ethanparsley", "Captain Sonar", "longhunter"],
+    ["longhunter", "Alt Name: $15 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "The Search for Lost Species", "beardnweird"],
+    ["beardnweird", "Gizmos", "DadDialTone"],
+    ["DadDialTone", "Alt Name: $20 Cash/PayPal/Venmo", "Leapster"],
+    ["Leapster", "Roll Camera!: The Filmmaking Board Game", "atanner12"],
+    ["atanner12", "Sprawlopolis", "BoardGames3000"],
+    ["BoardGames3000", "Alt Name: $10 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Unlock! Kids: Stories from the Past", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $5 Cash/Paypal/Venmo", "alexandraaplus"],
+    ["alexandraaplus", "CuBirds", "drgphx"],
+    ["drgphx", "Kanban: Driver's Edition", "alexandraaplus"],
+    ["alexandraaplus", "Creature Caravan", "QuantumMachina"],
+    ["QuantumMachina", "Alt Name: $5 Cash/PayPal/Venmo", "Rickdey55"],
+    ["Rickdey55", "Conspiracy: Abyss Universe", "drgphx"],
+    ["drgphx", "BOOoop.", "ViperMan"],
+    ["ViperMan", "Bonsai", "beardnweird"],
+    ["beardnweird", "The Quest for El Dorado", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $5 Cash/Paypal/Venmo", "GammaGoblinz"],
+    ["GammaGoblinz", "Chaosmos", "Ska_baron"],
+    ["Ska_baron", "Risk: Star Wars – Original Trilogy Edition", "KevinDice"],
+    ["KevinDice", "Guillotine", "badfish20"],
+    ["badfish20", "Codenames", "chrisbrandt"],
+    ["chrisbrandt", "Great Western Trail: Second Edition", "Phippsrx"],
+    ["Phippsrx", "Undaunted: Battle of Britain", "OlBlue"],
+    ["OlBlue", "The Guild of Merchant Explorers", "wonko101010"],
+    ["wonko101010", "Scoville", "badfish20"],
+    ["badfish20", "My Father's Work", "QuantumMachina"],
+    ["QuantumMachina", "Alt Name: $25 Cash/PayPal/Venmo", "graywolf323"],
+    ["graywolf323", "Trains", "scninmer08"],
+    ["scninmer08", "Isle of Skye: From Chieftain to King", "longhunter"],
+    ["longhunter", "Alt Name: $15 Cash/PayPal/Venmo", "Bizbbiz"],
+    ["Bizbbiz", "Modern Art Card Game", "scninmer08"],
+    ["scninmer08", "Alt Name: $20 Cash/PayPal/Venmo", "graywolf323"],
+    ["graywolf323", "Ahoy", "drgphx"],
+    ["drgphx", "AquaSphere", "roufus"],
+    ["roufus", "Santorini", "carbondrewtonium"],
+    ["carbondrewtonium", "The Crew: The Quest for Planet Nine", "RiVirCon"],
+    ["RiVirCon", "Imperium: Classics", "SneekyCarrot"],
+    ["SneekyCarrot", "Shadowrift", "atanner12"],
+    ["atanner12", "The Gang", "beardnweird"],
+    ["beardnweird", "Flatiron", "QuantumMachina"],
+    ["QuantumMachina", "FUSE", "Stealthshade"],
+    ["Stealthshade", "The Lost Expedition", "Krudly"],
+    ["Krudly", "Gulo Gulo", "teabo"],
+    ["teabo", "Can't Stop", "Ska_baron"],
+    ["Ska_baron", "The Fog of War", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $20 Cash/Paypal/Venmo", "paszkib2000"],
+    ["paszkib2000", "Age of Galaxy", "Sebastian_delima"],
+    ["Sebastian_delima", "Evacuation", "QuantumMachina"],
+    ["QuantumMachina", "Raiders of the North Sea", "Protoclown77"],
+    ["Protoclown77", "Small World", "Bizbbiz"],
+    ["Bizbbiz", "Star Wars: The Clone Wars", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $20 Cash/Paypal/Venmo", "scninmer08"],
+    ["scninmer08", "Shuffle and Swing", "Sebastian_delima"],
+    ["Sebastian_delima", "Lunar Rush", "wonko101010"],
+    ["wonko101010", "Undaunted: Normandy", "Leapster"],
+    ["Leapster", "Hadrian's Wall", "drgphx"],
+    ["drgphx", "Wildlands", "Sebastian_delima"],
+    ["Sebastian_delima", "Viticulture Essential Edition", "SnowyGoat85"],
+    ["SnowyGoat85", "QE", "Leapster"],
+    ["Leapster", "Resist!", "Phippsrx"],
+    ["Phippsrx", "Ancient Knowledge", "Leapster"],
+    ["Leapster", "Aliens: Another Glorious Day in the Corps", "Rickdey55"],
+    ["Rickdey55", "Skytear Horde", "DadDialTone"],
+    ["DadDialTone", "Near and Far", "GammaGoblinz"],
+    ["GammaGoblinz", "Teotihuacan: City of Gods", "GamerTroyRVA"],
+    ["GamerTroyRVA", "Century: Spice Road", "QuantumMachina"],
+    ["QuantumMachina", "Red Rising", "DadDialTone"],
+    ["DadDialTone", "Alt Name: $10 Cash/PayPal/Venmo", "Sebastian_delima"],
+    ["Sebastian_delima", "EXIT: The Game – Kidnapped in Fortune City", "KevinDice"],
+    ["KevinDice", "Alt Name: $10 Cash", "GammaGoblinz"],
+    ["GammaGoblinz", "Myrmes", "scninmer08"],
+    ["scninmer08", "Through the Desert", "Rickdey55"],
+    ["Rickdey55", "Jekyll vs. Hyde", "Leapster"],
+    ["Leapster", "Islands in the Mist", "DadDialTone"],
+    ["DadDialTone", "Alt Name: $5 Cash/PayPal/Venmo", "paszkib2000"],
+    ["paszkib2000", "Dice Hospital: ER – Emergency Roll", "alexandraaplus"],
+    ["alexandraaplus", "Zombie Dice", "DadDialTone"],
+    ["DadDialTone", "Alt Name: $5 Cash/PayPal/Venmo", "Sebastian_delima"],
+    ["Sebastian_delima", "Moon River", "drgphx"],
+    ["drgphx", "The Vale of Eternity", "kkornblum14"],
+    ["kkornblum14", "Terraforming Mars: Ares Expedition", "RiVirCon"],
+    ["RiVirCon", "Roll to the Top: Journeys", "getsumaiki"],
+    ["getsumaiki", "Cantaloop: Book 1 – Breaking into Prison", "spider1502"],
+    ["spider1502", "Endangered", "SneekyCarrot"],
+    ["SneekyCarrot", "Summoner Wars: Master Set", "kristybeardesigns"],
+    ["kristybeardesigns", "Mage Knight: Ultimate Edition", "DadDialTone"],
+    ["DadDialTone", "Space Base", "SneekyCarrot"],
+    ["SneekyCarrot", "Robin Hood and the Merry Men", "GammaGoblinz"],
+    ["GammaGoblinz", "Maracaibo", "Phippsrx"],
+    ["Phippsrx", "Pandemic Legacy: Season 1", "beardnweird"],
+    ["beardnweird", "Cyclades", "LostChord_Mark"],
+    ["LostChord_Mark", "Hellenica: Story of Greece", "Leapster"],
+    ["Leapster", "Obsession", "Phippsrx"],
+    ["Phippsrx", "John Company: Second Edition", "magusfool"],
+    ["magusfool", "Earthborne Rangers", "Knize"],
+    ["Knize", "Food Chain Magnate", "QuantumMachina"],
+    ["QuantumMachina", "Alt Name: $20 Cash/PayPal/Venmo", "magusfool"],
+    ["magusfool", "Thunder Road: Vendetta", "paszkib2000"],
+    ["paszkib2000", "Maglev Metro", "Stealthshade"],
+    ["Stealthshade", "Mind MGMT: The Psychic Espionage “Game.”", "somechineseguy"],
+    ["somechineseguy", "Pandemic Legacy: Season 2", "SnowyGoat85"],
+    ["SnowyGoat85", "Brass: Lancashire", "Leapster"],
+    ["Leapster", "Rats of Wistar", "beardnweird"],
+    ["beardnweird", "Bitoku", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $40 Cash/Paypal/Venmo", "graywolf323"],
+    ["graywolf323", "7 Wonders (Second Edition)", "drgphx"],
+    ["drgphx", "Lorenzo il Magnifico", "GammaGoblinz"],
+    ["GammaGoblinz", "Inis", "kristybeardesigns"],
+    ["kristybeardesigns", "Super Fantasy Brawl", "Rickdey55"],
+    ["Rickdey55", "Pandemic Legacy: Season 0", "beardnweird"],
+    ["beardnweird", "Marrakesh", "Rickdey55"],
+    ["Rickdey55", "Distilled", "QuantumMachina"],
+    ["QuantumMachina", "Tawantinsuyu: The Inca Empire", "longhunter"],
+    ["longhunter", "Alt Name: $15 Cash/PayPal/Venmo", "GammaGoblinz"],
+    ["GammaGoblinz", "Final Girl", "wonko101010"],
+    ["wonko101010", "Imhotep", "RiVirCon"],
+    ["RiVirCon", "Palazzo", "teabo"],
+    ["teabo", "Flash Point: Fire Rescue", "Bone_sense"],
+    ["Bone_sense", "The Grizzled", "mhinto"],
+    ["mhinto", "Roll Player", "carbondrewtonium"],
+    ["carbondrewtonium", "Evolution", "carsenyoung"],
+    ["carsenyoung", "Fool!", "scninmer08"],
+    ["scninmer08", "Sail", "Sebastian_delima"],
+    ["Sebastian_delima", "Castell", "GammaGoblinz"],
+    ["GammaGoblinz", "Above and Below", "Krudly"],
+    ["Krudly", "Explorers of the North Sea", "badfish20"],
+    ["badfish20", "Wandering Towers", "LostChord_Mark"],
+    ["LostChord_Mark", "Ankh: Gods of Egypt – Pantheon", "magusfool"],
+    ["magusfool", "Alt Name: $10 Cash/PayPal/Venmo", "paszkib2000"],
+    ["paszkib2000", "Beacon Patrol", "Sebastian_delima"],
+    ["Sebastian_delima", "Alice's Garden", "spider1502"],
+    ["spider1502", "Kōhaku", "carsenyoung"],
+    ["carsenyoung", "Bring Out Yer Dead", "kristybeardesigns"],
+    ["kristybeardesigns", "Last Night on Earth: The Zombie Game", "Ska_baron"],
+    ["Ska_baron", "ICECOOL", "Stealthshade"],
+    ["Stealthshade", "Creature Comforts", "alexandraaplus"],
+    ["alexandraaplus", "Tokyo Highway", "Stealthshade"],
+    ["Stealthshade", "World Wonders", "Leapster"],
+    ["Leapster", "Power Vacuum", "badfish20"],
+    ["badfish20", "Let's Go! To Japan", "LostChord_Mark"],
+    ["LostChord_Mark", "Expeditions", "paszkib2000"],
+    ["paszkib2000", "Roll Player Adventures", "Sebastian_delima"],
+    ["Sebastian_delima", "Dice Hospital", "paszkib2000"],
+    ["paszkib2000", "Legendary Encounters: A Firefly Deck Building Game", "badfish20"],
+    ["badfish20", "Spirit Island", "chesschiefy"],
+    ["chesschiefy", "Terra Mystica", "Astute_Asian"],
+    ["Astute_Asian", "Ticket to Ride", "wonko101010"],
+    ["wonko101010", "Terminus", "GammaGoblinz"],
+    ["GammaGoblinz", "Cloudspire", "kkornblum14"],
+    ["kkornblum14", "Downforce", "longhunter"],
+    ["longhunter", "Alt Name: $10 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Renegade", "atanner12"],
+    ["atanner12", "Burgle Bros 2: The Casino Capers", "SnowyGoat85"],
+    ["SnowyGoat85", "Alt Name: Social Deduction Bundle", "carbondrewtonium"],
+    ["carbondrewtonium", "Betrayal at House on the Hill", "wonko101010"],
+    ["wonko101010", "Lords of Waterdeep", "DadDialTone"],
+    ["DadDialTone", "Oltréé", "atanner12"],
+    ["atanner12", "The Mandalorian: Adventures", "Sebastian_delima"],
+    ["Sebastian_delima", "Hickory Dickory", "USACelt"],
+    ["USACelt", "Libertalia", "KevinDice"],
+    ["KevinDice", "Alt Name: $10 Cash", "scninmer08"],
+    ["scninmer08", "Turing Machine", "BoardGames3000"],
+    ["BoardGames3000", "Marvel United: Rise of the Black Panther", "DadDialTone"],
+    ["DadDialTone", "Alt Name: $20 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Taj Mahal", "longhunter"],
+    ["longhunter", "Alt Name: $10 Cash/PayPal/Venmo", "Leapster"],
+    ["Leapster", "Messina 1347", "longhunter"],
+    ["longhunter", "Alt Name: $10 Cash/PayPal/Venmo", "LostChord_Mark"],
+    ["LostChord_Mark", "Star Realms", "RiVirCon"],
+    ["RiVirCon", "Don Quixote", "spider1502"],
+    ["spider1502", "Warsaw: City of Ruins", "mhinto"],
+    ["mhinto", "Bohnanza: 25th Anniversary Edition", "Sebastian_delima"],
+    ["Sebastian_delima", "Garden Heist", "drgphx"],
+    ["drgphx", "Hidden Leaders", "Sebastian_delima"],
+    ["Sebastian_delima", "French Toast", "atanner12"],
+    ["atanner12", "The Lord of the Rings Adventure Book Game", "teabo"],
+    ["teabo", "Pocket Battles: Celts vs. Romans", "Leapster"],
+    ["Leapster", "SOS Titanic", "Stealthshade"],
+    ["Stealthshade", "Ticket to Ride", "LostChord_Mark"],
+    ["LostChord_Mark", "Maracaibo", "SnowyGoat85"],
+    ["SnowyGoat85", "The Captain Is Dead", "badfish20"],
+    ["badfish20", "Steam Park", "kristybeardesigns"],
+    ["kristybeardesigns", "Evolution", "chrisbrandt"],
+    ["chrisbrandt", "Nightmare Productions", "Leapster"],
+    ["Leapster", "The Night Cage", "paszkib2000"],
+    ["paszkib2000", "Quacks", "chesschiefy"],
+    ["chesschiefy", "Alt Name: $10 Cash/PayPal/Venmo", "Leapster"],
+    ["Leapster", "Nanga Parbat", "Rickdey55"],
+    ["Rickdey55", "Beyond Baker Street", "beardnweird"],
+    ["beardnweird", "Kabuto Sumo", "DadDialTone"],
+    ["DadDialTone", "Alt Name: $5 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Rapa Nui", "chrisbrandt"],
+    ["chrisbrandt", "Obsession", "lewistc2"],
+    ["lewistc2", "Star Wars: Armada", "badfish20"],
+    ["badfish20", "SETI: Search for Extraterrestrial Intelligence", "spider1502"],
+    ["spider1502", "Food Chain Magnate", "magusfool"],
+    ["magusfool", "Alt Name: $50 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Atlantis Rising (Second Edition)", "LostChord_Mark"],
+    ["LostChord_Mark", "Nemesis", "ethanparsley"],
+    ["ethanparsley", "Cyclades: Legendary Edition", "Sebastian_delima"],
+    ["Sebastian_delima", "Night Market", "Leapster"],
+    ["Leapster", "Andromeda's Edge", "QuantumMachina"],
+    ["QuantumMachina", "Alt Name: $15 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Chronicles of Crime", "atanner12"],
+    ["atanner12", "Mage Knight Board Game", "kkornblum14"],
+    ["kkornblum14", "CATAN: Cities & Knights", "LostChord_Mark"],
+    ["LostChord_Mark", "Encyclopedia", "RiVirCon"],
+    ["RiVirCon", "Planted: A Game of Nature & Nurture", "Bone_sense"],
+    ["Bone_sense", "Trails", "paregmenon"],
+    ["paregmenon", "Trash Pandas", "badfish20"],
+    ["badfish20", "Decrypto", "carbondrewtonium"],
+    ["carbondrewtonium", "Sea Salt & Paper", "weblawlib"],
+    ["weblawlib", "Lovelace & Babbage", "mhinto"],
+    ["mhinto", "The LOOP", "Leapster"],
+    ["Leapster", "Rolling Heights", "QuantumMachina"],
+    ["QuantumMachina", "Merchants of the Middle Ages", "scninmer08"],
+    ["scninmer08", "Alt Name: $20 Cash/PayPal/Venmo", "beardnweird"],
+    ["beardnweird", "Wreck Raiders", "LostChord_Mark"],
+    ["LostChord_Mark", "First Rat", "OlBlue"],
+    ["OlBlue", "1989: Dawn of Freedom", "longhunter"],
+    ["longhunter", "Alt Name: $15 Cash/PayPal/Venmo", "spider1502"],
+    ["spider1502", "Set a Watch", "Sebastian_delima"],
+    ["Sebastian_delima", "Jamaica: The Crew", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $5 Cash/Paypal/Venmo", "paszkib2000"],
+    ["paszkib2000", "EXIT: The Game – The Forbidden Castle", "KevinDice"],
+    ["KevinDice", "Alt Name: $10 Cash", "Sebastian_delima"],
+    ["Sebastian_delima", "Terraforming Mars", "Krudly"],
+    ["Krudly", "Masmorra: Dungeons of Arcadia", "DadDialTone"],
+    ["DadDialTone", "Scythe", "Leapster"],
+    ["Leapster", "Skyrise", "QuantumMachina"],
+    ["QuantumMachina", "Alt Name: $10 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Holly Oak", "Sebastian_delima"],
+    ["Sebastian_delima", "Tinderblox", "BoardGames3000"],
+    ["BoardGames3000", "Alt Name: $5 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Encore!", "Rickdey55"],
+    ["Rickdey55", "Rook", "chesschiefy"],
+    ["chesschiefy", "Alt Name: $5 Cash/PayPal/Venmo", "GammaGoblinz"],
+    ["GammaGoblinz", "Sushi Go Party!", "wonko101010"],
+    ["wonko101010", "Agricola: All Creatures Big and Small – The Big Box", "Leapster"],
+    ["Leapster", "Bamboo", "alexandraaplus"],
+    ["alexandraaplus", "Whistle Stop", "GammaGoblinz"],
+    ["GammaGoblinz", "Yedo", "RiVirCon"],
+    ["RiVirCon", "The Way of the Bear", "Leapster"],
+    ["Leapster", "Dorfromantik: The Board Game", "Krudly"],
+    ["Krudly", "Alhambra", "chesschiefy"],
+    ["chesschiefy", "Alt Name: $10 Cash/PayPal/Venmo", "Astute_Asian"],
+    ["Astute_Asian", "Pan Am", "Machinegun Joe"],
+    ["Machinegun Joe", "Alt Name: Three-item RPG Bundle", "wonko101010"],
+    ["wonko101010", "Batman: Everybody Lies", "Leapster"],
+    ["Leapster", "Demon Worker", "Sebastian_delima"],
+    ["Sebastian_delima", "The Lost Code", "scninmer08"],
+    ["scninmer08", "Alt Name: $20 Cash/PayPal/Venmo", "paszkib2000"],
+    ["paszkib2000", "Pan Am", "DadDialTone"],
+    ["DadDialTone", "Alt Name: $10 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "The Siege of Runedar", "Leapster"],
+    ["Leapster", "Forgotten Waters", "Stealthshade"],
+    ["Stealthshade", "Eila and Something Shiny", "ViperMan"],
+    ["ViperMan", "Fit to Print", "Rickdey55"],
+    ["Rickdey55", "Lord of the Rings: The Confrontation", "scninmer08"],
+    ["scninmer08", "Alt Name: $20 Cash/PayPal/Venmo", "LostChord_Mark"],
+    ["LostChord_Mark", "Folklore: The Affliction – Fall of the Spire", "drgphx"],
+    ["drgphx", "Cutthroat Caverns: Anniversary Edition", "Ska_baron"],
+    ["Ska_baron", "Wiz-War (Eighth Edition)", "Sebastian_delima"],
+    ["Sebastian_delima", "Art Society", "QuantumMachina"],
+    ["QuantumMachina", "Praga Caput Regni", "Leapster"],
+    ["Leapster", "General Orders: World War II", "scninmer08"],
+    ["scninmer08", "Alt Name: $10 Cash/PayPal/Venmo", "Sebastian_delima"],
+    ["Sebastian_delima", "Zombie 15'", "roufus"],
+    ["roufus", "Pantheum: Demigods of Olympia", "Leapster"],
+    ["Leapster", "Glory to Rome", "scninmer08"],
+    ["scninmer08", "Alt Name: $15 Cash/PayPal/Venmo", "beardnweird"],
+    ["beardnweird", "Letter Tycoon", "weblawlib"],
+    ["weblawlib", "Paperback Adventures", "beardnweird"],
+    ["beardnweird", "Knarr", "alexandraaplus"],
+    ["alexandraaplus", "Draftosaurus", "scninmer08"],
+    ["scninmer08", "Alt Name: $15 Cash/PayPal/Venmo", "Bizbbiz"],
+    ["Bizbbiz", "Chickapig", "longhunter"],
+    ["longhunter", "Alt Name: $5 Cash/PayPal/Venmo", "SneekyCarrot"],
+    ["SneekyCarrot", "Latice Hawai'i", "DadDialTone"],
+    ["DadDialTone", "CloudAge", "beardnweird"],
+    ["beardnweird", "Tribes of the Wind", "roufus"],
+    ["roufus", "Hadara", "Leapster"],
+    ["Leapster", "Windward", "DadDialTone"],
+    ["DadDialTone", "Alt Name: $5 Cash/PayPal/Venmo", "GammaGoblinz"],
+    ["GammaGoblinz", "Walnut Grove", "scninmer08"],
+    ["scninmer08", "Alt Name: $10 Cash/PayPal/Venmo", "deflagratio1"],
+    ["deflagratio1", "Zombicide: 2nd Edition", "Bizbbiz"],
+    ["Bizbbiz", "Draft & Write Records", "Rickdey55"],
+    ["Rickdey55", "The Grimm Forest", "drgphx"],
+    ["drgphx", "Azul: Queen's Garden", "SneekyCarrot"],
+    ["SneekyCarrot", "Alt Name: $5 Cash/Paypal/Venmo", "Sebastian_delima"],
+    ["Sebastian_delima", "Happy Little Dinosaurs", "Krudly"],
+    ["Krudly", "Forbidden Sky", "kristybeardesigns"],
+    ["kristybeardesigns", "Shadows of Brimstone: Forbidden Fortress", "Bizbbiz"],
+    ["Bizbbiz", "Between Two Cities", "ViperMan"],
+    ["ViperMan", "Colossal Cat in the Box", "Sebastian_delima"],
+    ["Sebastian_delima", "From the Moon", "GammaGoblinz"],
+    ["GammaGoblinz", "Bios: Megafauna (Second Edition)", "magusfool"],
+    ["magusfool", "Expeditions", "Leapster"],
+    ["Leapster", "Fast Sloths", "beardnweird"],
+    ["beardnweird", "Invincible: The Hero-Building Game", "Leapster"],
+    ["Leapster", "Apothebakery: The Culinary Alchemists", "Sebastian_delima"],
+    ["Sebastian_delima", "Encyclopedia", "Rickdey55"],
+    ["Rickdey55", "Great Western Trail: New Zealand", "Leapster"],
+    ["Leapster", "Ierusalem: Anno Domini", "beardnweird"],
+    ["beardnweird", "Galileo Galilei", "wonko101010"],
+    ["wonko101010", "Alt Name: $15 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Kabuto Sumo", "Sebastian_delima"],
+    ["Sebastian_delima", "Ancient Knowledge", "LostChord_Mark"],
+    ["LostChord_Mark", "Stroganov", "beardnweird"],
+    ["beardnweird", "Night Parade of a Hundred Yokai", "Sebastian_delima"],
+    ["Sebastian_delima", "Roll Player", "roufus"],
+    ["roufus", "Galaxy Trucker", "ethanparsley"],
+    ["ethanparsley", "Flamme Rouge", "ViperMan"],
+    ["ViperMan", "Petrichor: Collector's Edition", "SneekyCarrot"],
+    ["SneekyCarrot", "Evacuation", "magusfool"],
+    ["magusfool", "Alt Name: $20 Cash/PayPal/Venmo", "scninmer08"],
+    ["scninmer08", "Memoir '44", "wonko101010"],
+    ["wonko101010", "Dune: Imperium", "drgphx"],
+    ["drgphx", "Blackout: Hong Kong", "Phippsrx"],
+    ["Phippsrx", "Teotihuacan: City of Gods", "alexandraaplus"],
+    ["alexandraaplus", "The Pursuit of Happiness", "wonko101010"],
+    ["wonko101010", "Queendomino", "chesschiefy"],
+    ["chesschiefy", "Cascadia", "Astute_Asian"],
+    ["Astute_Asian", "Cosmic Encounter: 42nd Anniversary Edition", "drgphx"],
+    ["drgphx", "Nocturne", "alexandraaplus"],
+    ["alexandraaplus", "Lofoten", "Bone_sense"],
+    ["Bone_sense", "Mystic Paths", "Sebastian_delima"],
+    ["Sebastian_delima", "Akrotiri", "beardnweird"],
+    ["beardnweird", "Zenith", "Rickdey55"],
+    ["Rickdey55", "Thunderstone Quest", "Leapster"],
+    ["Leapster", "Horseless Carriage", "chrisbrandt"],
+    ["chrisbrandt", "Starship Captains", "SneekyCarrot"],
+    ["SneekyCarrot", "7 Wonders", "chesschiefy"],
+    ["chesschiefy", "Alt Name: $10 Cash/PayPal/Venmo", "GammaGoblinz"],
+    ["GammaGoblinz", "The Magnificent", "Stealthshade"],
+    ["Stealthshade", "Come Together", "Leapster"],
+    ["Leapster", "Thunder Road: Vendetta", "DadDialTone"],
+    ["DadDialTone", "The Isle of Cats", "Krudly"],
+    ["Krudly", "Alt Name: Small games collection", "wonko101010"],
+    ["wonko101010", "Kingdomino", "alexandraaplus"]
+  ]},
+];
+
+// LOOPS is already sorted smallest-to-largest and numbered sequentially (1, 2, 3...)
+// by the generator script. No re-sort or re-numbering needed.
+
+const MAX_LOOP_SIZE = 412;
+
+const PALETTE = [
+  '#c8a84b','#3db8c0','#c05a6a','#7a9e6a','#8b7ab8',
+  '#c88848','#4a9ab8','#b87a8a','#6a9e88','#a87ab8',
+  '#b8a84b','#5abcc0'
+];
+
+function nodeColor(idx) { return PALETTE[idx % PALETTE.length]; }
+function isCircle(loop) { return loop.trades.length <= 20; }
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── COVER THUMBNAILS ─────────────────────────────────────────────────────────
+
+function makeCoverCircle(loop) {
+  const T = loop.trades.length;
+  const minSz = 50, maxSz = 155;
+  const sz = Math.round(minSz + (T / MAX_LOOP_SIZE) * (maxSz - minSz));
+  const R = sz / 2 - 6;
+  const cx = sz / 2, cy = sz / 2;
+  const nr = Math.max(2, Math.round(R * 0.12));
+  const angles = loop.trades.map((_, i) => (2 * Math.PI * i / T) - Math.PI / 2);
+  const pts = angles.map(a => ({ x: cx + R * Math.cos(a), y: cy + R * Math.sin(a) }));
+
+  let parts = [`<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}">`];
+  for (let i = 0; i < T; i++) {
+    const next = (i + 1) % T;
+    let da = angles[next] - angles[i];
+    if (da < 0) da += 2 * Math.PI;
+    const largeArc = da > Math.PI ? 1 : 0;
+    const x1 = cx + R * Math.cos(angles[i]);
+    const y1 = cy + R * Math.sin(angles[i]);
+    const x2 = cx + R * Math.cos(angles[next]);
+    const y2 = cy + R * Math.sin(angles[next]);
+    parts.push(`<path d="M ${x1.toFixed(1)} ${y1.toFixed(1)} A ${R} ${R} 0 ${largeArc} 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" fill="none" stroke="${nodeColor(i)}" stroke-width="1" opacity="0.5"/>`);
+  }
+  for (let i = 0; i < T; i++) {
+    parts.push(`<circle cx="${pts[i].x.toFixed(1)}" cy="${pts[i].y.toFixed(1)}" r="${nr}" fill="${nodeColor(i)}" opacity="0.9"/>`);
+  }
+  parts.push('</svg>');
+  return parts.join('');
+}
+
+// ── FULL CIRCLE DIAGRAM ───────────────────────────────────────────────────────
+
+function makeCircleDiagram(loop) {
+  const T = loop.trades.length;
+  const labelSpace = 140;
+  const minR = 120, maxR = 280;
+  const R = Math.min(maxR, Math.max(minR, T * 16));
+  const sz = (R + labelSpace) * 2;
+  const cx = sz / 2, cy = sz / 2;
+  const nodeR = Math.max(6, Math.min(14, Math.floor(R * 0.06)));
+  const angles = loop.trades.map((_, i) => (2 * Math.PI * i / T) - Math.PI / 2);
+  const pts = angles.map(a => ({ x: cx + R * Math.cos(a), y: cy + R * Math.sin(a) }));
+  const markerId = `arr${loop.n}`;
+
+  let parts = [];
+  parts.push(`<svg width="100%" viewBox="0 0 ${sz} ${sz}" style="max-width:${sz}px">`);
+  parts.push(`<defs><marker id="${markerId}" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="var(--dim)" opacity="0.8"/></marker></defs>`);
+
+  for (let i = 0; i < T; i++) {
+    const next = (i + 1) % T;
+    let da = angles[next] - angles[i];
+    if (da < 0) da += 2 * Math.PI;
+    const largeArc = da > Math.PI ? 1 : 0;
+    const x1 = (cx + R * Math.cos(angles[i] + da * 0.02)).toFixed(1);
+    const y1 = (cy + R * Math.sin(angles[i] + da * 0.02)).toFixed(1);
+    const x2 = (cx + R * Math.cos(angles[i] + da * 0.98)).toFixed(1);
+    const y2 = (cy + R * Math.sin(angles[i] + da * 0.98)).toFixed(1);
+    parts.push(`<path d="M ${x1} ${y1} A ${R} ${R} 0 ${largeArc} 1 ${x2} ${y2}" fill="none" stroke="${nodeColor(i)}" stroke-width="1.5" opacity="0.6" marker-end="url(#${markerId})"/>`);
+  }
+
+  for (let i = 0; i < T; i++) {
+    const next = (i + 1) % T;
+    let da = angles[next] - angles[i];
+    if (da < 0) da += 2 * Math.PI;
+    const midAngle = angles[i] + da / 2;
+    const labelR = R + nodeR + 22;
+    const lx = (cx + labelR * Math.cos(midAngle)).toFixed(1);
+    const ly = (cy + labelR * Math.sin(midAngle)).toFixed(1);
+    const game = loop.trades[i][1];
+    const label = game.length > 32 ? game.substring(0, 30) + '…' : game;
+    const cosA = Math.cos(midAngle);
+    const anchor = cosA > 0.3 ? 'start' : cosA < -0.3 ? 'end' : 'middle';
+    parts.push(`<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="central" font-family="Cormorant Garamond, serif" font-size="11" font-style="italic" fill="var(--text)" opacity="0.75">${esc(label)}</text>`);
+  }
+
+  for (let i = 0; i < T; i++) {
+    const col = nodeColor(i);
+    const p = pts[i];
+    parts.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${nodeR}" fill="${col}" opacity="0.9" stroke="var(--bg)" stroke-width="2"/>`);
+    const uLabelR = R - nodeR - 18;
+    const ux = (cx + uLabelR * Math.cos(angles[i])).toFixed(1);
+    const uy = (cy + uLabelR * Math.sin(angles[i])).toFixed(1);
+    const cosA = Math.cos(angles[i]);
+    const uAnchor = cosA > 0.2 ? 'start' : cosA < -0.2 ? 'end' : 'middle';
+    parts.push(`<text x="${ux}" y="${uy}" text-anchor="${uAnchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="9" font-weight="400" fill="${col}" opacity="0.9">${esc(loop.trades[i][0])}</text>`);
+  }
+
+  parts.push('</svg>');
+  return parts.join('\n');
+}
+
+// ── TEXT LIST ─────────────────────────────────────────────────────────────────
+
+function makeTextList(loop) {
+  const rows = loop.trades.map((t, i) =>
+    `<div class="trade-row">` +
+    `<span class="trade-idx">${String(i + 1).padStart(2, '0')}</span>` +
+    `<span class="trade-giver">${esc(t[0])}</span>` +
+    `<span class="trade-game">${esc(t[1])}</span>` +
+    `<span class="trade-receiver">&rarr; ${esc(t[2])}</span>` +
+    `</div>`
+  ).join('');
+  return `<div class="trade-list">${rows}</div>`;
+}
+
+// ── BUILD COVER ───────────────────────────────────────────────────────────────
+
+function buildCover() {
+  const grid = document.getElementById('coverGrid');
+  LOOPS.forEach(loop => {
+    const cell = document.createElement('div');
+    cell.className = 'cover-cell';
+    cell.innerHTML = makeCoverCircle(loop) +
+      `<span class="cover-cell-label">Loop ${loop.n} &middot; ${loop.trades.length}</span>`;
+    cell.addEventListener('click', () => {
+      document.getElementById('loop' + loop.n).scrollIntoView({ behavior: 'smooth' });
+    });
+    grid.appendChild(cell);
+  });
+}
+
+// ── BUILD LOOP SECTIONS ───────────────────────────────────────────────────────
+
+function buildLoops() {
+  const wrapper = document.getElementById('loopsWrapper');
+  LOOPS.forEach((loop, idx) => {
+    const section = document.createElement('div');
+    section.className = 'loop-section';
+    section.id = 'loop' + loop.n;
+    const circle = isCircle(loop);
+    const badge = circle ? 'Circle Diagram' : 'Trade List';
+    section.innerHTML =
+      `<div class="loop-header">` +
+      `<div class="loop-num">${String(loop.n).padStart(2, '0')}</div>` +
+      `<div><div class="loop-name">Loop ${loop.n}</div>` +
+      `<div class="loop-meta">${loop.trades.length} trades</div></div>` +
+      `<div class="loop-badge">${badge}</div></div>` +
+      (circle
+        ? `<div class="diagram-wrap">${makeCircleDiagram(loop)}</div>`
+        : makeTextList(loop));
+    wrapper.appendChild(section);
+    if (idx < LOOPS.length - 1) {
+      const div = document.createElement('div');
+      div.className = 'divider';
+      wrapper.appendChild(div);
+    }
+  });
+}
+
+buildCover();
+buildLoops();
+</script>
+</body>
+</html>
