@@ -366,7 +366,7 @@ def format_report(records: list, top_n: int, loops_file: Path,
 
     # ── Header ────────────────────────────────────────────────────────────────
     out.append("=" * W)
-    title = "MATH TRADE GENIE — ERROR DETECTOR REPORT"
+    title = "MATH TRADE GENIE — ANOMALY DETECTOR REPORT"
     if show_all:
         title += "  [QA MODE — ALL PAIRS]"
     out.append(title)
@@ -464,15 +464,13 @@ def main():
     if args.output:
         output_file = Path(args.output)
     else:
-        out_dir = Path(__file__).parent / "outputs"
-        out_dir.mkdir(exist_ok=True)
-        suffix = "_qa_report.txt" if args.show_all else "_error_report.txt"
-        output_file = out_dir / (loops_file.stem + suffix)
+        suffix = "_qa_report.txt" if args.show_all else "_anomaly_report.txt"
+        output_file = loops_file.parent / (loops_file.stem + suffix)
 
     mode_label = "QA (all pairs)" if args.show_all else f"Top {args.top}"
 
     print("=" * 60)
-    print("Math Trade Genie — Error Detector  (Block 3)")
+    print("Math Trade Genie — Anomaly Detector  (Block 3)")
     print("=" * 60)
     print(f"  Loops file : {loops_file}")
     print(f"  Report out : {output_file}")
