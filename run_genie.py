@@ -32,19 +32,23 @@ def prompt_work_folder() -> Path:
 
 
 def prompt_file_in_folder(folder: Path, prompt_text: str) -> Path:
-    """List files in folder and ask user to enter a filename."""
-    files = sorted([f.name for f in folder.iterdir() if f.is_file()])
-    if files:
-        print(f"\n  Files currently in {folder.name}:")
-        for f in files:
-            print(f"    {f}")
+    """Show all files in folder as a numbered menu; user picks by number."""
     while True:
-        raw = input(f"\n{prompt_text}\n> ").strip()
-        p = folder / raw
-        if p.exists():
-            return p
-        print(f"  File not found: {p}")
-        print("  Please check the filename and try again.")
+        files = sorted([f.name for f in folder.iterdir() if f.is_file()])
+        if not files:
+            input(f"\n  (No files found in {folder.name}. Add files then press Enter to retry.)")
+            continue
+        print(f"\n  Files in {folder.name}:")
+        for i, name in enumerate(files, 1):
+            print(f"    {i}.  {name}")
+        raw = input(f"\n{prompt_text} — enter a number:\n> ").strip()
+        try:
+            n = int(raw)
+            if 1 <= n <= len(files):
+                return folder / files[n - 1]
+            print(f"  Please enter a number between 1 and {len(files)}.")
+        except ValueError:
+            print("  Please enter a number.")
 
 
 def prompt_optional(prompt_text: str, default: str = "") -> str:
@@ -69,8 +73,8 @@ def run_block(label: str, cmd: list) -> bool:
 
 def run_block1(work_folder: Path) -> bool:
     print("\n  Block 1 needs two input files from your work folder.")
-    results_file = prompt_file_in_folder(work_folder, "Results file name (OLWLG output):")
-    wants_file   = prompt_file_in_folder(work_folder, "Wants file name:")
+    wants_file   = prompt_file_in_folder(work_folder, "Wants file")
+    results_file = prompt_file_in_folder(work_folder, "Results file (OLWLG output)")
     cmd = [sys.executable, str(BLOCK1), str(results_file), str(wants_file)]
     return run_block("Block 1 — Loop Parser", cmd)
 
