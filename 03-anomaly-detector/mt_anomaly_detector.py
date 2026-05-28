@@ -314,6 +314,45 @@ def compute_all_deltas(loops: list, cache: dict) -> list:
 
 # ── Report Formatting ─────────────────────────────────────────────────────────
 
+def _format_summary(records: list, W: int) -> list:
+    """Build the SUMMARY section lines (no trailing = — caller appends it)."""
+    total_pairs       = len(records)
+    evaluated         = [r for r in records if r["delta_known"]]
+    unevaluated_count = total_pairs - len(evaluated)
+
+    overpaying     = [r for r in evaluated if r["delta"] < 0]
+    favorable      = [r for r in evaluated if r["delta"] > 0]
+    even           = [r for r in evaluated if r["delta"] == 0]
+
+    total_overpaid = round(sum(abs(r["delta"]) for r in overpaying), 2)
+    total_surplus  = round(sum(r["delta"]      for r in favorable),  2)
+    discrepancy    = round(abs(total_overpaid - total_surplus),       2)
+    balanced       = discrepancy < 0.01
+
+    out = []
+    out.append("=" * W)
+    out.append("SUMMARY")
+    out.append("=" * W)
+    out.append(f"  Total trade pairs            : {total_pairs}")
+    out.append(f"    Evaluated                  : {len(evaluated)}")
+    out.append(f"      Overpaying               : {len(overpaying):<4}  total overpaid  : ${total_overpaid:.2f}")
+    out.append(f"      Favorable                : {len(favorable):<4}  total surplus   : ${total_surplus:.2f}")
+    out.append(f"      Even                     : {len(even)}")
+    out.append(f"    Unevaluated                : {unevaluated_count}    (one or both item values unknown)")
+    out.append("")
+
+    if balanced:
+        out.append(f"  Closed system check          : BALANCED  ✓")
+        out.append(f"  (${total_overpaid:.2f} overpaid = ${total_surplus:.2f} surplus — every dollar accounted for)")
+    else:
+        out.append(f"  Closed system check          : IMBALANCED  ✗  (discrepancy: ${discrepancy:.2f})")
+        out.append(f"  (${total_overpaid:.2f} overpaid ≠ ${total_surplus:.2f} surplus)")
+
+    out.append("")
+    out.append(f"  Community value harvested    : ${total_surplus:.2f}")
+
+    return out
+
 def _fmtv(v: Optional[float]) -> str:
     return f"${v:.2f}" if v is not None else "UNKNOWN"
 
@@ -426,6 +465,7 @@ def format_report(records: list, top_n: int, loops_file: Path,
                 out.append(f"               {r['note_give']}")
             out.append("")
 
+    out.extend(_format_summary(records, W))
     out.append("=" * W)
     out.append("END OF REPORT")
     out.append("=" * W)
