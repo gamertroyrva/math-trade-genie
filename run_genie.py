@@ -100,6 +100,31 @@ def run_block2(work_folder: Path) -> bool:
     return run_block("Block 2 — HTML Visualizer", cmd)
 
 
+def prompt_block3_mode() -> list:
+    """Ask user which reporting mode to use. Returns extra CLI args for Block 3."""
+    print("\n  Mode:")
+    print("    1.  Top 10       (default)")
+    print("    2.  Top N        (enter a number)")
+    print("    3.  All pairs    (QA mode)")
+    while True:
+        raw = input("\nMode — enter a number:\n> ").strip()
+        if raw == "1":
+            return []
+        if raw == "2":
+            while True:
+                n_raw = input("\n  How many top trades to show?\n> ").strip()
+                try:
+                    n = int(n_raw)
+                    if n > 0:
+                        return ["--top", str(n)]
+                    print("  Please enter a positive number.")
+                except ValueError:
+                    print("  Please enter a number.")
+        if raw == "3":
+            return ["--all"]
+        print("  Please enter 1, 2, or 3.")
+
+
 def run_block3(work_folder: Path) -> bool:
     loops_files = sorted(work_folder.glob("*_loops.txt"))
 
@@ -109,7 +134,8 @@ def run_block3(work_folder: Path) -> bool:
     else:
         loops_file = prompt_file_in_folder(work_folder, "Loops .txt file name:")
 
-    cmd = [sys.executable, str(BLOCK3), str(loops_file)]
+    mode_args = prompt_block3_mode()
+    cmd = [sys.executable, str(BLOCK3), str(loops_file)] + mode_args
     return run_block("Block 3 — Anomaly Detector", cmd)
 
 
