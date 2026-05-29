@@ -314,7 +314,7 @@ def compute_all_deltas(loops: list, cache: dict) -> list:
 
 # ── Report Formatting ─────────────────────────────────────────────────────────
 
-def _format_summary(records: list, W: int) -> list:
+def _format_summary(records: list, W: int, dup_count: int = 0) -> list:
     """Build the SUMMARY section lines (no trailing = — caller appends it)."""
     total_pairs       = len(records)
     evaluated         = [r for r in records if r["delta_known"]]
@@ -349,8 +349,57 @@ def _format_summary(records: list, W: int) -> list:
         out.append(f"  (${total_overpaid:.2f} overpaid ≠ ${total_surplus:.2f} surplus)")
 
     out.append("")
+    out.append(f"  Possible Duplicate Protection issues flagged : {dup_count}")
+    out.append("")
     out.append(f"  Community value harvested    : ${total_surplus:.2f}")
 
+    return out
+
+
+def _find_duplicate_receives(records: list) -> list:
+    """
+    Find (person, item) pairs where a person receives the same non-cash item
+    in 2 or more trade edges across all loops.
+
+    Returns a list of dicts sorted by person name, each with:
+      person    : str
+      item      : str
+      locations : list of (loop_num, edge_index) tuples
+    """
+    from collections import defaultdict
+    seen = defaultdict(list)
+    for r in records:
+        item = r["item_recv"]
+        if parse_cash_value(item) is not None:
+            continue
+        seen[(r["person"], item)].append((r["loop_num"], r["edge_index"]))
+
+    dupes = [
+        {"person": person, "item": item, "locations": locs}
+        for (person, item), locs in seen.items()
+        if len(locs) >= 2
+    ]
+    dupes.sort(key=lambda d: d["person"].lower())
+    return dupes
+
+
+def _format_duplicates(dupes: list, W: int) -> list:
+    """Build the duplicate receives section lines."""
+    out = []
+    out.append("=" * W)
+    out.append("POSSIBLE INSTANCES OF PARTICIPANT RECEIVING DUPLICATE GAMES")
+    out.append("=" * W)
+    out.append("")
+    if not dupes:
+        out.append("  No duplicate receive instances detected.")
+        out.append("")
+    else:
+        for d in dupes:
+            count = len(d["locations"])
+            out.append(f"  {d['person']}  receives  [{d['item']}]  x{count}")
+            for loop_num, edge_index in d["locations"]:
+                out.append(f"    Loop {loop_num}, Edge {edge_index}")
+            out.append("")
     return out
 
 def _fmtv(v: Optional[float]) -> str:
@@ -465,7 +514,9 @@ def format_report(records: list, top_n: int, loops_file: Path,
                 out.append(f"               {r['note_give']}")
             out.append("")
 
-    out.extend(_format_summary(records, W))
+    dupes = _find_duplicate_receives(records)
+    out.extend(_format_duplicates(dupes, W))
+    out.extend(_format_summary(records, W, dup_count=len(dupes)))
     out.append("=" * W)
     out.append("END OF REPORT")
     out.append("=" * W)
