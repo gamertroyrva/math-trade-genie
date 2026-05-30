@@ -1,0 +1,221 @@
+getwants.cgi?listid=378360
+TradeMaximizer Javascript Version 0.1
+Run Date: 10:35:26 GMT-0400 (Eastern Daylight Time)
+#+ Geeklist: Second Ever Eastern USA Shipping Trade May 2026
+#+ ... https://www.boardgamegeek.com/geeklist/378360
+#+ Owner: GamerTroyRVA
+#+ Item count: 3567
+#+ Users with items: 170
+Options: ALLOW-DUMMIES REQUIRE-COLONS REQUIRE-USERNAMES HIDE-NONTRADES SHOW-ELAPSED-TIME SEED=123456 METRIC=USERS-TRADING
+Input Checksum: 42246d91e25a17e3f822da0814e13f4
+ERRORS:
+*** Unknown item MISSING-OFFICIAL (88 occurrences)
+
+[ users trading = 61 ] (iteration 0)
+TRADE LOOPS (95 total trades):
+
+(ALLOY1090) 12840317             receives (LEZGETSPOOKY) 12833801
+(LEZGETSPOOKY) 12833801          receives (JRP_ATG) 12843735
+(JRP_ATG) 12843735               receives (RYCHER) 12837392-COPY3
+(RYCHER) 12837392-COPY3          receives (MATTWOOD1221) 12832587
+(MATTWOOD1221) 12832587          receives (JIMMYSOUL) 12841957
+(JIMMYSOUL) 12841957             receives (BATMAN15) 12845882
+(BATMAN15) 12845882              receives (BLUE ORKA) 12833345
+(BLUE ORKA) 12833345             receives (JONDODD82) 12829970
+(JONDODD82) 12829970             receives (TYNAUT2) 12832836
+(TYNAUT2) 12832836               receives (RANDOMBANTERMAN) 12844506
+(RANDOMBANTERMAN) 12844506       receives (LCS213) 12844220
+(LCS213) 12844220                receives (CARROLLSA) 12841106
+(CARROLLSA) 12841106             receives (DTROGDON) 12833912
+(DTROGDON) 12833912              receives (LEAPSTER) 12850295
+(LEAPSTER) 12850295              receives (ELIUM) 12833394
+(ELIUM) 12833394                 receives (INSPIRINGCHICKEN) 12845600
+(INSPIRINGCHICKEN) 12845600      receives (MHFRAME) 12833064
+(MHFRAME) 12833064               receives (SGTHATRED) 12840344
+(SGTHATRED) 12840344             receives (DR_BALLON) 12846439
+(DR_BALLON) 12846439             receives (SEBASTIAN_DELIMA) 12845832
+(SEBASTIAN_DELIMA) 12845832      receives (DAGOPHER) 12845296
+(DAGOPHER) 12845296              receives (DTTALL) 12833752
+(DTTALL) 12833752                receives (CARROLLSA) 12841083
+(CARROLLSA) 12841083             receives (RANDOMBANTERMAN) 12844512
+(RANDOMBANTERMAN) 12844512       receives (ALLOY1090) 12840317
+
+(ALLOY1090) 12847862             receives (JR637) 12850305
+(JR637) 12850305                 receives (JK_RIKI) 12848623
+(JK_RIKI) 12848623               receives (SEBASTIAN_DELIMA) 12845828
+(SEBASTIAN_DELIMA) 12845828      receives (SUSAN1430) 12847217-COPY3
+(SUSAN1430) 12847217-COPY3       receives (CRITICALFAILURE) 12833024
+(CRITICALFAILURE) 12833024       receives (SGTHATRED) 12838979
+(SGTHATRED) 12838979             receives (ZAMOOSE) 12832633
+(ZAMOOSE) 12832633               receives (WINICHR) 12836403
+(WINICHR) 12836403               receives (BATMAN15) 12832770
+(BATMAN15) 12832770              receives (SUSAN1430) 12835454
+(SUSAN1430) 12835454             receives (SEBASTIAN_DELIMA) 12845028
+(SEBASTIAN_DELIMA) 12845028      receives (SUSAN1430) 12847251-COPY4
+(SUSAN1430) 12847251-COPY4       receives (NKID) 12832247
+(NKID) 12832247                  receives (TRUZEN) 12845708
+(TRUZEN) 12845708                receives (YOJIMBO529) 12846854
+(YOJIMBO529) 12846854            receives (SHEAFIFY) 12850242
+(SHEAFIFY) 12850242              receives (MWSCARPONI) 12832501-COPY2
+(MWSCARPONI) 12832501-COPY2      receives (MATTWOOD1221) 12832592
+(MATTWOOD1221) 12832592          receives (QUE_LO_CAKE) 12836782
+(QUE_LO_CAKE) 12836782           receives (NIEDIAM) 12835675
+(NIEDIAM) 12835675               receives (TRAVMAN5298) 12837975
+(TRAVMAN5298) 12837975           receives (YOJIMBO529) 12838757
+(YOJIMBO529) 12838757            receives (SOS1) 12834162
+(SOS1) 12834162                  receives (SEBASTIAN_DELIMA) 12845835
+(SEBASTIAN_DELIMA) 12845835      receives (RYCHER) 12837391-COPY1
+(RYCHER) 12837391-COPY1          receives (CIFFY) 12847475
+(CIFFY) 12847475                 receives (SCUBEAR) 12832925
+(SCUBEAR) 12832925               receives (SOUL2197) 12839938
+(SOUL2197) 12839938              receives (CHAOSDRAGON20) 12850339
+(CHAOSDRAGON20) 12850339         receives (SHEAFIFY) 12850260
+(SHEAFIFY) 12850260              receives (WILDPYGMY) 12838154
+(WILDPYGMY) 12838154             receives (YOJIMBO529) 12847387
+(YOJIMBO529) 12847387            receives (HEIRLOOM) 12833578
+(HEIRLOOM) 12833578              receives (YOJIMBO529) 12846823
+(YOJIMBO529) 12846823            receives (DAGOPHER) 12850049
+(DAGOPHER) 12850049              receives (RYCHER) 12837394-COPY2
+(RYCHER) 12837394-COPY2          receives (MATTYD777) 12834543
+(MATTYD777) 12834543             receives (TRAGEDY) 12837676
+(TRAGEDY) 12837676               receives (TRUZEN) 12845711
+(TRUZEN) 12845711                receives (SOUL2197) 12839967
+(SOUL2197) 12839967              receives (QUANTUMMACHINA) 12845321-COPY5
+(QUANTUMMACHINA) 12845321-COPY5  receives (DARULEYMAN) 12848408
+(DARULEYMAN) 12848408            receives (LEAPSTER) 12850244
+(LEAPSTER) 12850244              receives (YOJIMBO529) 12847384
+(YOJIMBO529) 12847384            receives (MIKEMIRANDI) 12837055
+(MIKEMIRANDI) 12837055           receives (HEIRLOOM) 12845818
+(HEIRLOOM) 12845818              receives (TEALS_OF_RAGE) 12842590
+(TEALS_OF_RAGE) 12842590         receives (NJACKSON32) 12838921
+(NJACKSON32) 12838921            receives (SEQUENTIALPLANET) 12836525
+(SEQUENTIALPLANET) 12836525      receives (DTTALL) 12833744
+(DTTALL) 12833744                receives (RYCHER) 12837391-COPY5
+(RYCHER) 12837391-COPY5          receives (TEALS_OF_RAGE) 12839472
+(TEALS_OF_RAGE) 12839472         receives (ZARAOMI) 12841774
+(ZARAOMI) 12841774               receives (DESIGNSBYBRIANA) 12838099
+(DESIGNSBYBRIANA) 12838099       receives (TEALS_OF_RAGE) 12842501
+(TEALS_OF_RAGE) 12842501         receives (LEZGETSPOOKY) 12830440
+(LEZGETSPOOKY) 12830440          receives (JR637) 12850309
+(JR637) 12850309                 receives (RENTALCABIN) 12845603
+(RENTALCABIN) 12845603           receives (JON_ATHAN_HALL) 12842412
+(JON_ATHAN_HALL) 12842412        receives (SEBASTIAN_DELIMA) 12845827
+(SEBASTIAN_DELIMA) 12845827      receives (IM1INSANE1) 12846209
+(IM1INSANE1) 12846209            receives (JK_RIKI) 12839607
+(JK_RIKI) 12839607               receives (MIKEMIRANDI) 12843978
+(MIKEMIRANDI) 12843978           receives (NKID) 12838025
+(NKID) 12838025                  receives (ALLOY1090) 12847862
+
+(CTURNER0034) 12846898           receives (TAB0033) 12849514
+(TAB0033) 12849514               receives (JOSHUAPFULTON) 12849116
+(JOSHUAPFULTON) 12849116         receives (CTURNER0034) 12846898
+
+(JBMOBY) 12831959                receives (JR637) 12850303
+(JR637) 12850303                 receives (JBMOBY) 12831959
+
+ITEM SUMMARY (95 total trades):
+
+(ALLOY1090) 12840317             receives (LEZGETSPOOKY) 12833801          and sends to (RANDOMBANTERMAN) 12844512
+(ALLOY1090) 12847862             receives (JR637) 12850305                 and sends to (NKID) 12838025
+(BATMAN15) 12832770              receives (SUSAN1430) 12835454             and sends to (WINICHR) 12836403
+(BATMAN15) 12845882              receives (BLUE ORKA) 12833345             and sends to (JIMMYSOUL) 12841957
+(BLUE ORKA) 12833345             receives (JONDODD82) 12829970             and sends to (BATMAN15) 12845882
+(CARROLLSA) 12841083             receives (RANDOMBANTERMAN) 12844512       and sends to (DTTALL) 12833752
+(CARROLLSA) 12841106             receives (DTROGDON) 12833912              and sends to (LCS213) 12844220
+(CHAOSDRAGON20) 12850339         receives (SHEAFIFY) 12850260              and sends to (SOUL2197) 12839938
+(CIFFY) 12847475                 receives (SCUBEAR) 12832925               and sends to (RYCHER) 12837391-COPY1
+(CRITICALFAILURE) 12833024       receives (SGTHATRED) 12838979             and sends to (SUSAN1430) 12847217-COPY3
+(CTURNER0034) 12846898           receives (TAB0033) 12849514               and sends to (JOSHUAPFULTON) 12849116
+(DAGOPHER) 12845296              receives (DTTALL) 12833752                and sends to (SEBASTIAN_DELIMA) 12845832
+(DAGOPHER) 12850049              receives (RYCHER) 12837394-COPY2          and sends to (YOJIMBO529) 12846823
+(DARULEYMAN) 12848408            receives (LEAPSTER) 12850244              and sends to (QUANTUMMACHINA) 12845321-COPY5
+(DESIGNSBYBRIANA) 12838099       receives (TEALS_OF_RAGE) 12842501         and sends to (ZARAOMI) 12841774
+(DR_BALLON) 12846439             receives (SEBASTIAN_DELIMA) 12845832      and sends to (SGTHATRED) 12840344
+(DTROGDON) 12833912              receives (LEAPSTER) 12850295              and sends to (CARROLLSA) 12841106
+(DTTALL) 12833744                receives (RYCHER) 12837391-COPY5          and sends to (SEQUENTIALPLANET) 12836525
+(DTTALL) 12833752                receives (CARROLLSA) 12841083             and sends to (DAGOPHER) 12845296
+(ELIUM) 12833394                 receives (INSPIRINGCHICKEN) 12845600      and sends to (LEAPSTER) 12850295
+(HEIRLOOM) 12833578              receives (YOJIMBO529) 12846823            and sends to (YOJIMBO529) 12847387
+(HEIRLOOM) 12845818              receives (TEALS_OF_RAGE) 12842590         and sends to (MIKEMIRANDI) 12837055
+(IM1INSANE1) 12846209            receives (JK_RIKI) 12839607               and sends to (SEBASTIAN_DELIMA) 12845827
+(INSPIRINGCHICKEN) 12845600      receives (MHFRAME) 12833064               and sends to (ELIUM) 12833394
+(JBMOBY) 12831959                receives (JR637) 12850303                 and sends to (JR637) 12850303
+(JIMMYSOUL) 12841957             receives (BATMAN15) 12845882              and sends to (MATTWOOD1221) 12832587
+(JK_RIKI) 12839607               receives (MIKEMIRANDI) 12843978           and sends to (IM1INSANE1) 12846209
+(JK_RIKI) 12848623               receives (SEBASTIAN_DELIMA) 12845828      and sends to (JR637) 12850305
+(JONDODD82) 12829970             receives (TYNAUT2) 12832836               and sends to (BLUE ORKA) 12833345
+(JON_ATHAN_HALL) 12842412        receives (SEBASTIAN_DELIMA) 12845827      and sends to (RENTALCABIN) 12845603
+(JOSHUAPFULTON) 12849116         receives (CTURNER0034) 12846898           and sends to (TAB0033) 12849514
+(JR637) 12850303                 receives (JBMOBY) 12831959                and sends to (JBMOBY) 12831959
+(JR637) 12850305                 receives (JK_RIKI) 12848623               and sends to (ALLOY1090) 12847862
+(JR637) 12850309                 receives (RENTALCABIN) 12845603           and sends to (LEZGETSPOOKY) 12830440
+(JRP_ATG) 12843735               receives (RYCHER) 12837392-COPY3          and sends to (LEZGETSPOOKY) 12833801
+(LCS213) 12844220                receives (CARROLLSA) 12841106             and sends to (RANDOMBANTERMAN) 12844506
+(LEAPSTER) 12850244              receives (YOJIMBO529) 12847384            and sends to (DARULEYMAN) 12848408
+(LEAPSTER) 12850295              receives (ELIUM) 12833394                 and sends to (DTROGDON) 12833912
+(LEZGETSPOOKY) 12830440          receives (JR637) 12850309                 and sends to (TEALS_OF_RAGE) 12842501
+(LEZGETSPOOKY) 12833801          receives (JRP_ATG) 12843735               and sends to (ALLOY1090) 12840317
+(MATTWOOD1221) 12832587          receives (JIMMYSOUL) 12841957             and sends to (RYCHER) 12837392-COPY3
+(MATTWOOD1221) 12832592          receives (QUE_LO_CAKE) 12836782           and sends to (MWSCARPONI) 12832501-COPY2
+(MATTYD777) 12834543             receives (TRAGEDY) 12837676               and sends to (RYCHER) 12837394-COPY2
+(MHFRAME) 12833064               receives (SGTHATRED) 12840344             and sends to (INSPIRINGCHICKEN) 12845600
+(MIKEMIRANDI) 12837055           receives (HEIRLOOM) 12845818              and sends to (YOJIMBO529) 12847384
+(MIKEMIRANDI) 12843978           receives (NKID) 12838025                  and sends to (JK_RIKI) 12839607
+(MWSCARPONI) 12832501-COPY2      receives (MATTWOOD1221) 12832592          and sends to (SHEAFIFY) 12850242
+(NIEDIAM) 12835675               receives (TRAVMAN5298) 12837975           and sends to (QUE_LO_CAKE) 12836782
+(NJACKSON32) 12838921            receives (SEQUENTIALPLANET) 12836525      and sends to (TEALS_OF_RAGE) 12842590
+(NKID) 12832247                  receives (TRUZEN) 12845708                and sends to (SUSAN1430) 12847251-COPY4
+(NKID) 12838025                  receives (ALLOY1090) 12847862             and sends to (MIKEMIRANDI) 12843978
+(QUANTUMMACHINA) 12845321-COPY5  receives (DARULEYMAN) 12848408            and sends to (SOUL2197) 12839967
+(QUE_LO_CAKE) 12836782           receives (NIEDIAM) 12835675               and sends to (MATTWOOD1221) 12832592
+(RANDOMBANTERMAN) 12844506       receives (LCS213) 12844220                and sends to (TYNAUT2) 12832836
+(RANDOMBANTERMAN) 12844512       receives (ALLOY1090) 12840317             and sends to (CARROLLSA) 12841083
+(RENTALCABIN) 12845603           receives (JON_ATHAN_HALL) 12842412        and sends to (JR637) 12850309
+(RYCHER) 12837391-COPY1          receives (CIFFY) 12847475                 and sends to (SEBASTIAN_DELIMA) 12845835
+(RYCHER) 12837391-COPY5          receives (TEALS_OF_RAGE) 12839472         and sends to (DTTALL) 12833744
+(RYCHER) 12837392-COPY3          receives (MATTWOOD1221) 12832587          and sends to (JRP_ATG) 12843735
+(RYCHER) 12837394-COPY2          receives (MATTYD777) 12834543             and sends to (DAGOPHER) 12850049
+(SCUBEAR) 12832925               receives (SOUL2197) 12839938              and sends to (CIFFY) 12847475
+(SEBASTIAN_DELIMA) 12845028      receives (SUSAN1430) 12847251-COPY4       and sends to (SUSAN1430) 12835454
+(SEBASTIAN_DELIMA) 12845827      receives (IM1INSANE1) 12846209            and sends to (JON_ATHAN_HALL) 12842412
+(SEBASTIAN_DELIMA) 12845828      receives (SUSAN1430) 12847217-COPY3       and sends to (JK_RIKI) 12848623
+(SEBASTIAN_DELIMA) 12845832      receives (DAGOPHER) 12845296              and sends to (DR_BALLON) 12846439
+(SEBASTIAN_DELIMA) 12845835      receives (RYCHER) 12837391-COPY1          and sends to (SOS1) 12834162
+(SEQUENTIALPLANET) 12836525      receives (DTTALL) 12833744                and sends to (NJACKSON32) 12838921
+(SGTHATRED) 12838979             receives (ZAMOOSE) 12832633               and sends to (CRITICALFAILURE) 12833024
+(SGTHATRED) 12840344             receives (DR_BALLON) 12846439             and sends to (MHFRAME) 12833064
+(SHEAFIFY) 12850242              receives (MWSCARPONI) 12832501-COPY2      and sends to (YOJIMBO529) 12846854
+(SHEAFIFY) 12850260              receives (WILDPYGMY) 12838154             and sends to (CHAOSDRAGON20) 12850339
+(SOS1) 12834162                  receives (SEBASTIAN_DELIMA) 12845835      and sends to (YOJIMBO529) 12838757
+(SOUL2197) 12839938              receives (CHAOSDRAGON20) 12850339         and sends to (SCUBEAR) 12832925
+(SOUL2197) 12839967              receives (QUANTUMMACHINA) 12845321-COPY5  and sends to (TRUZEN) 12845711
+(SUSAN1430) 12835454             receives (SEBASTIAN_DELIMA) 12845028      and sends to (BATMAN15) 12832770
+(SUSAN1430) 12847217-COPY3       receives (CRITICALFAILURE) 12833024       and sends to (SEBASTIAN_DELIMA) 12845828
+(SUSAN1430) 12847251-COPY4       receives (NKID) 12832247                  and sends to (SEBASTIAN_DELIMA) 12845028
+(TAB0033) 12849514               receives (JOSHUAPFULTON) 12849116         and sends to (CTURNER0034) 12846898
+(TEALS_OF_RAGE) 12839472         receives (ZARAOMI) 12841774               and sends to (RYCHER) 12837391-COPY5
+(TEALS_OF_RAGE) 12842501         receives (LEZGETSPOOKY) 12830440          and sends to (DESIGNSBYBRIANA) 12838099
+(TEALS_OF_RAGE) 12842590         receives (NJACKSON32) 12838921            and sends to (HEIRLOOM) 12845818
+(TRAGEDY) 12837676               receives (TRUZEN) 12845711                and sends to (MATTYD777) 12834543
+(TRAVMAN5298) 12837975           receives (YOJIMBO529) 12838757            and sends to (NIEDIAM) 12835675
+(TRUZEN) 12845708                receives (YOJIMBO529) 12846854            and sends to (NKID) 12832247
+(TRUZEN) 12845711                receives (SOUL2197) 12839967              and sends to (TRAGEDY) 12837676
+(TYNAUT2) 12832836               receives (RANDOMBANTERMAN) 12844506       and sends to (JONDODD82) 12829970
+(WILDPYGMY) 12838154             receives (YOJIMBO529) 12847387            and sends to (SHEAFIFY) 12850260
+(WINICHR) 12836403               receives (BATMAN15) 12832770              and sends to (ZAMOOSE) 12832633
+(YOJIMBO529) 12838757            receives (SOS1) 12834162                  and sends to (TRAVMAN5298) 12837975
+(YOJIMBO529) 12846823            receives (DAGOPHER) 12850049              and sends to (HEIRLOOM) 12833578
+(YOJIMBO529) 12846854            receives (SHEAFIFY) 12850242              and sends to (TRUZEN) 12845708
+(YOJIMBO529) 12847384            receives (MIKEMIRANDI) 12837055           and sends to (LEAPSTER) 12850244
+(YOJIMBO529) 12847387            receives (HEIRLOOM) 12833578              and sends to (WILDPYGMY) 12838154
+(ZAMOOSE) 12832633               receives (WINICHR) 12836403               and sends to (SGTHATRED) 12838979
+(ZARAOMI) 12841774               receives (DESIGNSBYBRIANA) 12838099       and sends to (TEALS_OF_RAGE) 12839472
+
+Results Checksum: 7fe0423f4d71d1e13e32efcc0c9fad4
+
+Num trades   = 95 of 3020 items (3.1%)
+Total cost   = 95 (avg 1.00)
+Num groups   = 4
+Group sizes  = 65 25 3 2
+Sum squares  = 4863
+Elapsed time = 199ms

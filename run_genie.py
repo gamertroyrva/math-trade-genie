@@ -14,6 +14,7 @@ import sys
 # ── Resolve block script paths relative to this harness ───────────────────────
 
 ROOT        = Path(__file__).parent
+BLOCK0      = ROOT / "00-trade-counter"   / "mt_trade_counter.py"
 BLOCK1      = ROOT / "01-loop-parser"    / "mt_results_genie.py"
 BLOCK2      = ROOT / "02-html-visualizer" / "mt_loops_to_html.py"
 BLOCK3      = ROOT / "03-anomaly-detector" / "mt_anomaly_detector.py"
@@ -70,6 +71,12 @@ def run_block(label: str, cmd: list) -> bool:
 
 
 # ── Block runners ─────────────────────────────────────────────────────────────
+
+def run_block0(work_folder: Path) -> bool:
+    results_file = prompt_file_in_folder(work_folder, "Results file (OLWLG output)")
+    cmd = [sys.executable, str(BLOCK0), str(results_file)]
+    return run_block("Block 0 — Trade Counter", cmd)
+
 
 def run_block1(work_folder: Path) -> bool:
     print("\n  Block 1 needs two input files from your work folder.")
@@ -145,10 +152,11 @@ MENU = """
 ╔══════════════════════════════════════╗
 ║      Math Trade Genie — Harness      ║
 ╠══════════════════════════════════════╣
+║  0.  Block 0 — Trade Counter         ║
 ║  1.  Block 1 — Loop Parser           ║
 ║  2.  Block 2 — HTML Visualizer       ║
 ║  3.  Block 3 — Anomaly Detector      ║
-║  4.  Full Pipeline  (1 → 2 → 3)      ║
+║  4.  Full Pipeline  (0 → 1 → 2 → 3) ║
 ║  Q.  Quit                            ║
 ╚══════════════════════════════════════╝
 """
@@ -165,15 +173,19 @@ def main():
         print(MENU)
         choice = input("Choice: ").strip().upper()
 
-        if choice == "1":
+        if choice == "0":
+            run_block0(work_folder)
+        elif choice == "1":
             run_block1(work_folder)
         elif choice == "2":
             run_block2(work_folder)
         elif choice == "3":
             run_block3(work_folder)
         elif choice == "4":
-            print("\n  Running full pipeline: Block 1 → Block 2 → Block 3")
-            ok = run_block1(work_folder)
+            print("\n  Running full pipeline: Block 0 → Block 1 → Block 2 → Block 3")
+            ok = run_block0(work_folder)
+            if ok:
+                ok = run_block1(work_folder)
             if ok:
                 ok = run_block2(work_folder)
             if ok:
