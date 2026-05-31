@@ -228,7 +228,7 @@ HTML_TEMPLATE = """\
   }
 
   .cover-eyebrow {
-    font-size: 10px;
+    font-size: 15px;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--gold);
@@ -238,7 +238,7 @@ HTML_TEMPLATE = """\
 
   .cover-title {
     font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(42px, 8vw, 90px);
+    font-size: clamp(36px, 6vw, 72px);
     font-weight: 700;
     line-height: 1.0;
     text-align: center;
@@ -248,7 +248,7 @@ HTML_TEMPLATE = """\
   }
 
   .cover-sub {
-    font-size: 11px;
+    font-size: 14px;
     color: var(--dim);
     letter-spacing: 0.15em;
     margin-bottom: 80px;
@@ -284,7 +284,7 @@ HTML_TEMPLATE = """\
   }
 
   .scroll-hint {
-    font-size: 10px;
+    font-size: 13px;
     letter-spacing: 0.2em;
     color: var(--muted);
     text-transform: uppercase;
@@ -313,7 +313,7 @@ HTML_TEMPLATE = """\
     display: flex;
     align-items: baseline;
     gap: 20px;
-    margin-bottom: 48px;
+    margin-bottom: 20px;
     padding-bottom: 20px;
     border-bottom: 1px solid var(--border);
   }
@@ -488,17 +488,18 @@ function makeCircleDiagram(loop) {
 
   let parts = [];
   parts.push(`<svg width="100%" viewBox="0 0 ${sz} ${sz}" style="max-width:${sz}px">`);
-  parts.push(`<defs><marker id="${markerId}" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto"><polygon points="0 0, 7 2.5, 0 5" fill="var(--dim)" opacity="0.8"/></marker></defs>`);
+  parts.push(`<defs><marker id="${markerId}" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto"><polygon points="0 0, 12 4, 0 8" fill="#cccccc" opacity="0.9"/></marker></defs>`);
 
   for (let i = 0; i < T; i++) {
     const next = (i + 1) % T;
     let da = angles[next] - angles[i];
     if (da < 0) da += 2 * Math.PI;
     const largeArc = da > Math.PI ? 1 : 0;
-    const x1 = (cx + R * Math.cos(angles[i] + da * 0.02)).toFixed(1);
-    const y1 = (cy + R * Math.sin(angles[i] + da * 0.02)).toFixed(1);
-    const x2 = (cx + R * Math.cos(angles[i] + da * 0.98)).toFixed(1);
-    const y2 = (cy + R * Math.sin(angles[i] + da * 0.98)).toFixed(1);
+    const clearAngle = Math.asin(Math.min(0.99, (nodeR + 4) / R));
+    const x1 = (cx + R * Math.cos(angles[i] + clearAngle)).toFixed(1);
+    const y1 = (cy + R * Math.sin(angles[i] + clearAngle)).toFixed(1);
+    const x2 = (cx + R * Math.cos(angles[next] - clearAngle)).toFixed(1);
+    const y2 = (cy + R * Math.sin(angles[next] - clearAngle)).toFixed(1);
     parts.push(`<path d="M ${x1} ${y1} A ${R} ${R} 0 ${largeArc} 1 ${x2} ${y2}" fill="none" stroke="${nodeColor(i)}" stroke-width="1.5" opacity="0.6" marker-end="url(#${markerId})"/>`);
   }
 
