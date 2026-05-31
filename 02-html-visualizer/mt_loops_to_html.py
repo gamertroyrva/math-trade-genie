@@ -476,7 +476,7 @@ function makeCoverCircle(loop) {
 
 function makeCircleDiagram(loop) {
   const T = loop.trades.length;
-  const labelSpace = 140;
+  const labelSpace = 50;
   const minR = 120, maxR = 280;
   const R = Math.min(maxR, Math.max(minR, T * 16));
   const sz = (R + labelSpace) * 2;
