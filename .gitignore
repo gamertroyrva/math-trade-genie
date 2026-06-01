@@ -3,3 +3,4 @@
 value_cache.json
 inputs/
 outputs/
+.claude/
