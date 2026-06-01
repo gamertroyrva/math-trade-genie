@@ -1,0 +1,190 @@
+177 total trades · 6 loops
+
+Loop 1 (4 trades)
+    1. Adil3tr -> [Decipher] -> designsbybriana
+    2. designsbybriana -> [GPS] -> Que_lo_cake
+    3. Que_lo_cake -> [NMBR 9] -> Plerumque
+    4. Plerumque -> [Soda Jerk] -> Adil3tr
+
+Loop 2 (103 trades)
+     1. Adil3tr -> [Resist!] -> JBMoby
+     2. JBMoby -> [Power Vacuum] -> dahn
+     3. dahn -> [Alt Name: $20 Amazon/Venmo/Zelle] -> Sebastian_delima
+     4. Sebastian_delima -> [The Search for Planet X] -> jon_athan_hall
+     5. jon_athan_hall -> [Istanbul: Big Box] -> Regislive
+     6. Regislive -> [Automobiles] -> Adil3tr
+     7. Adil3tr -> [Alt Name: $25 Shake Shack Gift Card] -> beatsmd
+     8. beatsmd -> [Dorfromantik: The Board Game] -> porkuslime
+     9. porkuslime -> [Botanik] -> im1insane1
+    10. im1insane1 -> [Trails] -> PhaseLoss
+    11. PhaseLoss -> [Tiny Epic Pirates] -> DtTall
+    12. DtTall -> [Targi] -> Randombanterman
+    13. Randombanterman -> [Starship Captains] -> mattyd777
+    14. mattyd777 -> [Alt Name: Beautiful 3D Dice Tower] -> DtTall
+    15. DtTall -> [LUNA Capital] -> dagopher
+    16. dagopher -> [Alt Name: $20 Cash/PayPal] -> Sebastian_delima
+    17. Sebastian_delima -> [Spectral] -> dr_ballon
+    18. dr_ballon -> [First Rat] -> SgtHatred
+    19. SgtHatred -> [Alt Name: 3D printed insert] -> mhframe
+    20. mhframe -> [Starship Captains] -> plays for keeps
+    21. plays for keeps -> [Carcassonne] -> Plerumque
+    22. Plerumque -> [Dino Trix: Tarot Adventures] -> Eschy12
+    23. Eschy12 -> [Ovation] -> mattyd777
+    24. mattyd777 -> [Spirits of the Wild] -> travman5298
+    25. travman5298 -> [Lure] -> JK_Riki
+    26. JK_Riki -> [The Ravens of Thri Sahashri] -> tab0033
+    27. tab0033 -> [Alt Name: $10 PayPal/Venmo] -> ZarAomi
+    28. ZarAomi -> [Up or Down?] -> Que_lo_cake
+    29. Que_lo_cake -> [Alt Name: G Shock Watch] -> mattwood1221
+    30. mattwood1221 -> [Knarr] -> Teals_of_Rage
+    31. Teals_of_Rage -> [DNUP] -> stickstomagnets
+    32. stickstomagnets -> [Alt Name: $20 via PayPal] -> jrp_atg
+    33. jrp_atg -> [Café Baras] -> LezGetSpooky
+    34. LezGetSpooky -> [GoodCritters] -> Alloy1090
+    35. Alloy1090 -> [Trekking Through History] -> Randombanterman
+    36. Randombanterman -> [Flamecraft] -> nkid
+    37. nkid -> [TOKYO METRO] -> MikeMirandi
+    38. MikeMirandi -> [The Architects of Amytis] -> JK_Riki
+    39. JK_Riki -> [The Castles of Burgundy: The Card Game] -> vwooba
+    40. vwooba -> [Alt Name: $15 PayPal] -> Sebastian_delima
+    41. Sebastian_delima -> [Age of Galaxy] -> sos1
+    42. sos1 -> [General Orders: World War II] -> Yojimbo529
+    43. Yojimbo529 -> [Gloom] -> Meejw
+    44. Meejw -> [Tabriz] -> mdiep
+    45. mdiep -> [Alt Name: $25 via PayPal, Venmo, Apple Pay Cash, or online GC] -> Chaiftan
+    46. Chaiftan -> [Masters of Renaissance: Lorenzo il Magnifico – The Card Game] -> DaRuleyman
+    47. DaRuleyman -> [The Lord of the Rings: Adventure to Mount Doom] -> narr603
+    48. narr603 -> [Zooloretto] -> Jexhai
+    49. Jexhai -> [The Grimm Forest] -> bstormcrow
+    50. bstormcrow -> [Heading Forward] -> emmeray
+    51. emmeray -> [Wingspan] -> Niediam
+    52. Niediam -> [Snailed It!] -> Plerumque
+    53. Plerumque -> [Aurum] -> Jexhai
+    54. Jexhai -> [The Fox in the Forest Duet] -> plays for keeps
+    55. plays for keeps -> [Probe] -> EllenCaroline
+    56. EllenCaroline -> [Royal Visit] -> Plerumque
+    57. Plerumque -> [Purrramid] -> Regislive
+    58. Regislive -> [Linko] -> Sebastian_delima
+    59. Sebastian_delima -> [Palm Island] -> emmeray
+    60. emmeray -> [The Night Cage] -> Schwenkstar
+    61. Schwenkstar -> [Alt Name: &quot;Archaeology&quot; Collection (2 Games)] -> im1insane1
+    62. im1insane1 -> [Wilmot's Warehouse] -> Sourhex
+    63. Sourhex -> [Town Center (Fourth Edition)] -> Yojimbo529
+    64. Yojimbo529 -> [Unmatched: Battle of Legends, Volume Two] -> truzen
+    65. truzen -> [Destinies] -> RentalCabin
+    66. RentalCabin -> [Fractured Sky] -> jr637
+    67. jr637 -> [Roam] -> Alloy1090
+    68. Alloy1090 -> [Leaf: Deluxe Edition] -> mongooseroar
+    69. mongooseroar -> [QE] -> Schwenkstar
+    70. Schwenkstar -> [Mansions of Madness: Second Edition – Beyond the Threshold: Expansion] -> im1insane1
+    71. im1insane1 -> [Azul] -> Plerumque
+    72. Plerumque -> [Iliad] -> travman5298
+    73. travman5298 -> [Alt Name: 7 Small Box/Bag Games Bundle] -> JK_Riki
+    74. JK_Riki -> [Origins: Ancient Wonders] -> Dredry Toenail
+    75. Dredry Toenail -> [Cities] -> chole185
+    76. chole185 -> [Parks: Roll & Hike] -> spdc
+    77. spdc -> [Alt Name: Small card game bundle] -> JK_Riki
+    78. JK_Riki -> [Duel for Cardia] -> truzen
+    79. truzen -> [SHŌBU] -> Rycher
+    80. Rycher -> [Carcassonne: Abbey & Mayor] -> im1insane1
+    81. im1insane1 -> [Metro X] -> InspiringChicken
+    82. InspiringChicken -> [Vantage] -> Nargus
+    83. Nargus -> [Alt Name: $50 PayPal/Gift Card] -> Scubear
+    84. Scubear -> [Alt Name: $50 Mystery Game Box] -> tab0033
+    85. tab0033 -> [Alt Name: $35 PayPal/Venmo] -> jrp_atg
+    86. jrp_atg -> [Popcorn] -> Leapster
+    87. Leapster -> [Star Wars: Imperial Assault] -> DaRuleyman
+    88. DaRuleyman -> [Unconscious Mind] -> designsbybriana
+    89. designsbybriana -> [Lords of Waterdeep] -> Gomers Pile
+    90. Gomers Pile -> [Revive] -> susan1430
+    91. susan1430 -> [Parks (Second Edition)] -> not_george
+    92. not_george -> [Arkham Horror: The Card Game – Jenny Barnes Promo Cards] -> CriticalFailure
+    93. CriticalFailure -> [Galileo Project] -> LezGetSpooky
+    94. LezGetSpooky -> [Futuropia] -> Teals_of_Rage
+    95. Teals_of_Rage -> [Alpine Trails] -> designsbybriana
+    96. designsbybriana -> [Alt Name: $20 PayPal Venmo Amazon] -> ZarAomi
+    97. ZarAomi -> [Torchlit] -> narr603
+    98. narr603 -> [Zombie Dice] -> PaleHorseRider
+    99. PaleHorseRider -> [Alt Name: $10 Gift Card or Amazon; no Pay-pal] -> edbolme
+   100. edbolme -> [Princes of the Renaissance] -> soul2197
+   101. soul2197 -> [Monster Capture Race] -> Scubear
+   102. Scubear -> [Kansas Pacific] -> BartBlackbeard
+   103. BartBlackbeard -> [Libertalia] -> Adil3tr
+
+Loop 3 (2 trades)
+    1. Adil3tr -> [Alt Name: $25 Shake Shack Gift Card] -> soul2197
+    2. soul2197 -> [Alt Name: Pick any 2 games] -> Adil3tr
+
+Loop 4 (44 trades)
+    1. Alloy1090 -> [Ironwood] -> EssejSllim
+    2. EssejSllim -> [Isle of Skye: From Chieftain to King] -> heirloom
+    3. heirloom -> [Things in Rings] -> carrollsa
+    4. carrollsa -> [Cyberion] -> DtTall
+    5. DtTall -> [Kodachi] -> Schwenkstar
+    6. Schwenkstar -> [Nightmare Productions] -> linjgames
+    7. linjgames -> [Favor of the Pharaoh] -> mattyd777
+    8. mattyd777 -> [Havalandi] -> Plerumque
+    9. Plerumque -> [Alt Name: $15 PayPal/GC] -> DtTall
+   10. DtTall -> [Tiny Epic Dungeons] -> SequentialPlanet
+   11. SequentialPlanet -> [Tesseract] -> njackson32
+   12. njackson32 -> [Java] -> Teals_of_Rage
+   13. Teals_of_Rage -> [Hanamikoji] -> JK_Riki
+   14. JK_Riki -> [Mini Rogue] -> JBMoby
+   15. JBMoby -> [Mord im Arosa] -> Sourhex
+   16. Sourhex -> [Newton] -> Rycher
+   17. Rycher -> [Orléans: The Plague] -> Reiksguard
+   18. Reiksguard -> [Alt Name: $20 gift certificate (Venmo or Game Store GC) delivered electronically] -> beatsmd
+   19. beatsmd -> [Isle of Skye: From Chieftain to King] -> klund
+   20. klund -> [Alt Name: 3D Printed Accessory Set for The Lord of the Rings: Fate of the Fellowship] -> Yojimbo529
+   21. Yojimbo529 -> [Nations] -> beatsmd
+   22. beatsmd -> [Alt Name: $20 PayPal or Gift Card to Amazon / GameNerdz / MiniatureMarket] -> ZarAomi
+   23. ZarAomi -> [Fields of Green] -> Teals_of_Rage
+   24. Teals_of_Rage -> [Doomtown: Reloaded] -> Rycher
+   25. Rycher -> [Alt Name: $15 PayPal or Gift Card to Amazon / GameNerdz / MiniatureMarket] -> sheafify
+   26. sheafify -> [Dokmus] -> Yojimbo529
+   27. Yojimbo529 -> [The Castles of Burgundy] -> heirloom
+   28. heirloom -> [IKI] -> Yojimbo529
+   29. Yojimbo529 -> [Unmatched Adventures: Tales to Amaze] -> wildpygmy
+   30. wildpygmy -> [Alt Name: $25 PayPal, Venmo or Amazon Gift Card] -> sheafify
+   31. sheafify -> [Helionox: Deluxe Edition] -> chaosdragon20
+   32. chaosdragon20 -> [Cursed Court] -> soul2197
+   33. soul2197 -> [Toy Battle] -> truzen
+   34. truzen -> [The White Castle] -> TRagedy
+   35. TRagedy -> [Clank! In! Space!: A Deck-Building Adventure] -> mattyd777
+   36. mattyd777 -> [Sherlock Holmes Consulting Detective: The Baker Street Irregulars] -> jimmysoul
+   37. jimmysoul -> [Alt Name: LEGO Technic Service Truck No. 42008] -> mattwood1221
+   38. mattwood1221 -> [Daitoshi] -> Teals_of_Rage
+   39. Teals_of_Rage -> [Aquatica] -> heirloom
+   40. heirloom -> [3 Ring Circus] -> MikeMirandi
+   41. MikeMirandi -> [Dilluvia Project] -> Yojimbo529
+   42. Yojimbo529 -> [The Anarchy] -> Leapster
+   43. Leapster -> [Great Western Trail: New Zealand] -> mjschajm
+   44. mjschajm -> [Near and Far] -> Alloy1090
+
+Loop 5 (18 trades)
+    1. batman15 -> [Anachrony] -> winichr
+    2. winichr -> [Rurik: Dawn of Kiev] -> zamoose
+    3. zamoose -> [Gaia Project] -> SgtHatred
+    4. SgtHatred -> [Cubitos] -> CriticalFailure
+    5. CriticalFailure -> [Arkham Horror: The Card Game – The Path to Carcosa: Expansion] -> susan1430
+    6. susan1430 -> [Alt Name: $40 Venmo/PayPal/GC] -> Sebastian_delima
+    7. Sebastian_delima -> [Formosa Tea] -> mongooseroar
+    8. mongooseroar -> [1849: The Game of Sicilian Railways] -> zeder
+    9. zeder -> [Tales of the Arthurian Knights] -> heirloom
+   10. heirloom -> [Hot Streak] -> vwooba
+   11. vwooba -> [Alt Name: $45 PayPal] -> dtrogdon
+   12. dtrogdon -> [The Lord of the Rings: Duel for Middle-earth] -> carrollsa
+   13. carrollsa -> [Whistle Mountain] -> LCS213
+   14. LCS213 -> [The Castles of Burgundy] -> Randombanterman
+   15. Randombanterman -> [Apothebakery: The Culinary Alchemists] -> tynaut2
+   16. tynaut2 -> [Village] -> jondodd82
+   17. jondodd82 -> [Bruxelles 1893: Belle Époque] -> Blue Orka
+   18. Blue Orka -> [EOS: Island of Angels] -> batman15
+
+Loop 6 (6 trades)
+    1. Ciffy -> [Jarl: The Vikings Tile-Laying Game] -> Rycher
+    2. Rycher -> [Alt Name: $15 PayPal or Gift Card to Amazon / GameNerdz / MiniatureMarket] -> Sebastian_delima
+    3. Sebastian_delima -> [The LOOP: Fur Brigade] -> susan1430
+    4. susan1430 -> [Alt Name: $30 Venmo/PayPal/GC] -> Sebastian_delima
+    5. Sebastian_delima -> [INK] -> jrp_atg
+    6. jrp_atg -> [Joan of Arc: Orléans Draw & Write] -> Ciffy
