@@ -534,18 +534,161 @@ function makeCircleDiagram(loop) {
   return parts.join('\\n');
 }
 
-// ── TEXT LIST ─────────────────────────────────────────────────────────────────
+// ── CAPSULE DIAGRAM ───────────────────────────────────────────────────────────
 
-function makeTextList(loop) {
-  const rows = loop.trades.map((t, i) =>
-    `<div class="trade-row">` +
-    `<span class="trade-idx">${String(i + 1).padStart(2, '0')}</span>` +
-    `<span class="trade-giver">${esc(t[0])}</span>` +
-    `<span class="trade-game">${esc(t[1])}</span>` +
-    `<span class="trade-receiver">&rarr; ${esc(t[2])}</span>` +
-    `</div>`
-  ).join('');
-  return `<div class="trade-list">${rows}</div>`;
+function makeCapsuleDiagram(loop) {
+  const T = loop.trades.length;
+  const nodeR = 8;
+  const padX = 95;
+  const padY = 65;
+  const svgW = 660;                    // fixed width — matches large circle diagrams
+  const capR = svgW / 2 - padX;       // = 235; fills the fixed width
+
+  const minRailH = 50;
+  const minSpacing = 40;              // minimum arc-length between nodes on rails
+  const railH = Math.max(minRailH, (T * minSpacing - 2 * Math.PI * capR) / 2);
+  const perimeter = 2 * Math.PI * capR + 2 * railH;
+  const step = perimeter / T;
+
+  const svgH = 2 * capR + railH + 2 * padY;
+  const cx = svgW / 2;
+  const cy = svgH / 2;
+  const topCY = cy - railH / 2;
+  const botCY = cy + railH / 2;
+
+  // Cumulative phase boundary arc-lengths (clockwise from 12 o'clock)
+  const L1 = Math.PI * capR / 2;       // end of top-right quarter cap
+  const L2 = L1 + railH;               // end of right rail
+  const L3 = L2 + Math.PI * capR;      // end of bottom cap
+  const L4 = L3 + railH;               // end of left rail
+  // perimeter = L4 + PI*capR/2  (top-left quarter back to 12 o'clock)
+
+  // (x, y) for arc-distance s along the capsule perimeter
+  function posAt(s) {
+    s = ((s % perimeter) + perimeter) % perimeter;
+    if (s <= L1) {
+      const theta = -Math.PI / 2 + s / capR;
+      return [cx + capR * Math.cos(theta), topCY + capR * Math.sin(theta)];
+    } else if (s <= L2) {
+      return [cx + capR, topCY + (s - L1)];
+    } else if (s <= L3) {
+      const theta = (s - L2) / capR;
+      return [cx + capR * Math.cos(theta), botCY + capR * Math.sin(theta)];
+    } else if (s <= L4) {
+      return [cx - capR, botCY - (s - L3)];
+    } else {
+      const theta = -Math.PI + (s - L4) / capR;
+      return [cx + capR * Math.cos(theta), topCY + capR * Math.sin(theta)];
+    }
+  }
+
+  // 0=top-right cap quarter, 1=right rail, 2=bottom cap, 3=left rail, 4=top-left cap quarter
+  function phaseOf(s) {
+    s = ((s % perimeter) + perimeter) % perimeter;
+    if (s <= L1) return 0;
+    if (s <= L2) return 1;
+    if (s <= L3) return 2;
+    if (s <= L4) return 3;
+    return 4;
+  }
+
+  // SVG path d-string following the capsule from arc-distance sa for arc-length len
+  function buildPath(sa, len) {
+    const sb = sa + len;
+    const [x0, y0] = posAt(sa);
+    let d = `M ${x0.toFixed(1)} ${y0.toFixed(1)}`;
+    const bounds = [0, L1, L2, L3, L4, perimeter,
+                    perimeter + L1, perimeter + L2, perimeter + L3, perimeter + L4, 2 * perimeter];
+    let cur = sa;
+    for (const b of bounds) {
+      if (b <= cur + 1e-9) continue;
+      if (b >= sb - 1e-9) break;
+      const [bx, by] = posAt(b);
+      const ph = phaseOf((cur + b) / 2);
+      d += (ph === 1 || ph === 3)
+        ? ` L ${bx.toFixed(1)} ${by.toFixed(1)}`
+        : ` A ${capR} ${capR} 0 0 1 ${bx.toFixed(1)} ${by.toFixed(1)}`;
+      cur = b;
+    }
+    const [ex, ey] = posAt(sb);
+    const ph = phaseOf((cur + sb) / 2);
+    d += (ph === 1 || ph === 3)
+      ? ` L ${ex.toFixed(1)} ${ey.toFixed(1)}`
+      : ` A ${capR} ${capR} 0 0 1 ${ex.toFixed(1)} ${ey.toFixed(1)}`;
+    return d;
+  }
+
+  const markerId = `arr${loop.n}`;
+  const clearance = nodeR + 4;
+  let parts = [];
+  parts.push(`<svg width="100%" viewBox="0 0 ${Math.round(svgW)} ${Math.round(svgH)}" style="max-width:${Math.round(svgW)}px">`);
+  parts.push(`<defs><marker id="${markerId}" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto"><polygon points="0 0, 12 4, 0 8" fill="#cccccc" opacity="0.9"/></marker></defs>`);
+
+  // Arrows: one arc-following path per trade, colored by sender
+  for (let i = 0; i < T; i++) {
+    const len = step - 2 * clearance;
+    if (len <= 0) continue;
+    const d = buildPath(i * step + clearance, len);
+    parts.push(`<path d="${d}" fill="none" stroke="${nodeColor(i)}" stroke-width="1.5" opacity="0.6" marker-end="url(#${markerId})"/>`);
+  }
+
+  // Game labels — outside the track, at midpoint of each arc segment
+  for (let i = 0; i < T; i++) {
+    const sMid = i * step + step / 2;
+    const [mx, my] = posAt(sMid);
+    const ph = phaseOf(sMid);
+    const outsideDist = nodeR + 22;
+    let lx, ly, anchor;
+
+    if (ph === 1) {
+      lx = cx + capR + outsideDist; ly = my; anchor = 'start';
+    } else if (ph === 3) {
+      lx = cx - capR - outsideDist; ly = my; anchor = 'end';
+    } else {
+      const arcCY = (ph === 2) ? botCY : topCY;
+      const dx = mx - cx, dy = my - arcCY;
+      lx = cx + (dx / capR) * (capR + outsideDist);
+      ly = arcCY + (dy / capR) * (capR + outsideDist);
+      const cosA = dx / capR;
+      anchor = cosA > 0.2 ? 'start' : cosA < -0.2 ? 'end' : 'middle';
+    }
+
+    const game = loop.trades[i][1];
+    const label = game.length > 32 ? game.substring(0, 30) + '\\u2026' : game;
+    parts.push(`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dominant-baseline="central" font-family="Cormorant Garamond, serif" font-size="11" font-style="italic" fill="var(--text)" opacity="0.75">${esc(label)}</text>`);
+  }
+
+  // Nodes and person labels — person labels always on the inside of the track
+  for (let i = 0; i < T; i++) {
+    const s = i * step;
+    const [px, py] = posAt(s);
+    const col = nodeColor(i);
+    const ph = phaseOf(s);
+    const insideDist = nodeR + 14;
+    let ux, uy, uAnchor;
+
+    if (ph === 1) {
+      // Right rail: inside = toward horizontal center
+      ux = px - insideDist; uy = py; uAnchor = 'end';
+    } else if (ph === 3) {
+      // Left rail: inside = toward horizontal center
+      ux = px + insideDist; uy = py; uAnchor = 'start';
+    } else {
+      // Cap: inside = toward cap center
+      const arcCY = (ph === 2) ? botCY : topCY;
+      const dx = px - cx, dy = py - arcCY;
+      ux = cx + (dx / capR) * (capR - insideDist);
+      uy = arcCY + (dy / capR) * (capR - insideDist);
+      const cosA = dx / capR;
+      uAnchor = cosA > 0.2 ? 'start' : cosA < -0.2 ? 'end' : 'middle';
+    }
+
+    parts.push(`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${nodeR}" fill="${col}" opacity="0.9" stroke="var(--bg)" stroke-width="2"/>`);
+    parts.push(`<text x="${ux.toFixed(1)}" y="${uy.toFixed(1)}" text-anchor="${uAnchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="9" font-weight="400" fill="${col}" opacity="0.9">${esc(loop.trades[i][0])}</text>`);
+  }
+
+  parts.push('</svg>');
+  return parts.join('\\n');
 }
 
 // ── BUILD COVER ───────────────────────────────────────────────────────────────
@@ -573,7 +716,7 @@ function buildLoops() {
     section.className = 'loop-section';
     section.id = 'loop' + loop.n;
     const circle = isCircle(loop);
-    const badge = circle ? 'Circle Diagram' : 'Trade List';
+    const badge = circle ? 'Circle Diagram' : 'Capsule Diagram';
     section.innerHTML =
       `<div class="loop-header">` +
       `<div class="loop-num">${String(loop.n).padStart(2, '0')}</div>` +
@@ -582,7 +725,7 @@ function buildLoops() {
       `<div class="loop-badge">${badge}</div></div>` +
       (circle
         ? `<div class="diagram-wrap">${makeCircleDiagram(loop)}</div>`
-        : makeTextList(loop));
+        : `<div class="diagram-wrap">${makeCapsuleDiagram(loop)}</div>`);
     wrapper.appendChild(section);
     if (idx < LOOPS.length - 1) {
       const div = document.createElement('div');
