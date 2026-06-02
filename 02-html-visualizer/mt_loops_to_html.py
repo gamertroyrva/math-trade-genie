@@ -537,17 +537,34 @@ function makeCircleDiagram(loop) {
 // ── CAPSULE DIAGRAM ───────────────────────────────────────────────────────────
 
 function makeCapsuleDiagram(loop) {
+  // Design principle: the two semicircular caps must feel identical to the top and
+  // bottom of the gold-standard circle diagram (T=18-20, R=280).  Every dimension
+  // below flows from that constraint.
+
   const T = loop.trades.length;
   const nodeR = 8;
   const padX = 95;
   const padY = 65;
-  const svgW = 660;                    // fixed width — matches large circle diagrams
-  const capR = svgW / 2 - padX;       // = 235; fills the fixed width
+
+  // capR matches the circle diagram's maxR so cap node spacing is identical to the
+  // gold-standard circle's top/bottom arc spacing.
+  const capR = 280;
+
+  // svgW derived from capR: (capR + padX) * 2 = (280 + 95) * 2 = 750px.
+  // A narrower value would clip the caps or force a smaller capR.
+  const svgW = 750;
 
   const minRailH = 50;
-  const minSpacing = 40;              // minimum arc-length between nodes on rails
-  const railH = Math.max(minRailH, (T * minSpacing - 2 * Math.PI * capR) / 2);
-  const perimeter = 2 * Math.PI * capR + 2 * railH;
+
+  // Hard minimum arc-length between every adjacent node, caps and rails alike.
+  // 80px is a deliberate overcorrection to prove the spacing mechanism moves.
+  // The capsule grows as tall as needed — only height is unconstrained.
+  const minStep = 80;
+  const capPerim = 2 * Math.PI * capR;
+  const railH = Math.max(minRailH, (T * minStep - capPerim) / 2);
+  const perimeter = capPerim + 2 * railH;  // >= T * minStep by construction
+
+  // Arc-length between successive nodes — exactly minStep for typical large loops.
   const step = perimeter / T;
 
   const svgH = 2 * capR + railH + 2 * padY;
@@ -556,12 +573,16 @@ function makeCapsuleDiagram(loop) {
   const topCY = cy - railH / 2;
   const botCY = cy + railH / 2;
 
-  // Cumulative phase boundary arc-lengths (clockwise from 12 o'clock)
-  const L1 = Math.PI * capR / 2;       // end of top-right quarter cap
-  const L2 = L1 + railH;               // end of right rail
-  const L3 = L2 + Math.PI * capR;      // end of bottom cap
-  const L4 = L3 + railH;               // end of left rail
-  // perimeter = L4 + PI*capR/2  (top-left quarter back to 12 o'clock)
+  // Cumulative arc-length boundaries, clockwise from 12 o'clock:
+  //   0 → L1  : top-right quarter cap  (quarter of the top semicircle)
+  //   L1 → L2 : right rail             (straight down)
+  //   L2 → L3 : bottom cap             (full bottom semicircle, left-to-right)
+  //   L3 → L4 : left rail              (straight up)
+  //   L4 → perimeter : top-left quarter cap  (closes back to 12 o'clock)
+  const L1 = Math.PI * capR / 2;
+  const L2 = L1 + railH;
+  const L3 = L2 + Math.PI * capR;
+  const L4 = L3 + railH;
 
   // (x, y) for arc-distance s along the capsule perimeter
   function posAt(s) {
