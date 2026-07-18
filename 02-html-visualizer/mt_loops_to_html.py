@@ -516,30 +516,21 @@ function parseAltName(s) {
 
 // ── COVER THUMBNAILS ─────────────────────────────────────────────────────────
 
-function makeCoverCircle(loop) {
+function makeCoverThumb(loop) {
   const T = loop.trades.length;
-  const minSz = 50, maxSz = 155;
-  const sz = Math.round(minSz + (T / MAX_LOOP_SIZE) * (maxSz - minSz));
-  const R = sz / 2 - 6;
-  const cx = sz / 2, cy = sz / 2;
-  const nr = Math.max(2, Math.round(R * 0.12));
+  const sz = Math.round(50 + (T / MAX_LOOP_SIZE) * 105);
+  const R0 = sz / 2 - 6;
+  const density = Math.max(2, Math.floor((2 * Math.PI * R0 / T) / 1.6));
+  const nr = Math.max(2, Math.min(Math.round(R0 * 0.12), density));
+  const R = sz / 2 - nr - 3, cx = sz / 2, cy = sz / 2;
   const angles = loop.trades.map((_, i) => (2 * Math.PI * i / T) - Math.PI / 2);
-  const pts = angles.map(a => ({ x: cx + R * Math.cos(a), y: cy + R * Math.sin(a) }));
 
   let parts = [`<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}">`];
+  parts.push(`<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#222630" stroke-width="1"/>`);
   for (let i = 0; i < T; i++) {
-    const next = (i + 1) % T;
-    let da = angles[next] - angles[i];
-    if (da < 0) da += 2 * Math.PI;
-    const largeArc = da > Math.PI ? 1 : 0;
-    const x1 = cx + R * Math.cos(angles[i]);
-    const y1 = cy + R * Math.sin(angles[i]);
-    const x2 = cx + R * Math.cos(angles[next]);
-    const y2 = cy + R * Math.sin(angles[next]);
-    parts.push(`<path d="M ${x1.toFixed(1)} ${y1.toFixed(1)} A ${R} ${R} 0 ${largeArc} 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" fill="none" stroke="${nodeColor(i)}" stroke-width="1" opacity="0.5"/>`);
-  }
-  for (let i = 0; i < T; i++) {
-    parts.push(`<circle cx="${pts[i].x.toFixed(1)}" cy="${pts[i].y.toFixed(1)}" r="${nr}" fill="${nodeColor(i)}" opacity="0.9"/>`);
+    const x = (cx + R * Math.cos(angles[i])).toFixed(1);
+    const y = (cy + R * Math.sin(angles[i])).toFixed(1);
+    parts.push(`<circle cx="${x}" cy="${y}" r="${nr}" fill="${nodeColor(i)}" opacity="0.9"/>`);
   }
   parts.push('</svg>');
   return parts.join('');
@@ -720,7 +711,7 @@ function buildCover() {
   LOOPS.forEach(loop => {
     const cell = document.createElement('div');
     cell.className = 'cover-cell';
-    cell.innerHTML = makeCoverCircle(loop) +
+    cell.innerHTML = makeCoverThumb(loop) +
       `<span class="cover-cell-label">Loop ${loop.n} &middot; ${loop.trades.length}</span>`;
     cell.addEventListener('click', () => {
       document.getElementById('loop' + loop.n).scrollIntoView({ behavior: 'smooth' });
