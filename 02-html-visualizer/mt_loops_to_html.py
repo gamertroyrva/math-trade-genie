@@ -406,6 +406,74 @@ HTML_TEMPLATE = """\
     color: var(--teal);
     font-weight: 500;
   }
+
+  /* DETAIL CARD */
+  .detail-wrap { display: flex; justify-content: center; }
+
+  .detail-card {
+    margin: 20px auto 0;
+    max-width: 560px;
+    background: #10131a;
+    border: 1px solid #2a3040;
+    border-radius: 8px;
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .detail-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .detail-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--gold2);
+  }
+
+  .detail-clear {
+    cursor: pointer;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .detail-clear:hover { color: var(--text); }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 8px 14px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .detail-label {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding-top: 3px;
+  }
+
+  .detail-label.gets { color: var(--teal); }
+  .detail-label.gives { color: var(--gold); }
+
+  .detail-game {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-style: italic;
+  }
+
+  .detail-connector { color: var(--dim); }
+
+  .detail-person.gets { color: var(--teal); }
+  .detail-person.gives { color: var(--gold); }
 </style>
 </head>
 <body>
@@ -600,6 +668,49 @@ function makeRingDiagram(loop) {
 
   parts.push('</svg>');
   return parts.join('\\n');
+}
+
+// ── SELECTION ENGINE ─────────────────────────────────────────────────────────
+
+function selectNode(n, i) {
+  SEL[n] = SEL[n] === i ? null : i;
+  rerenderLoop(n);
+}
+
+function clearSel(n) {
+  SEL[n] = null;
+  rerenderLoop(n);
+}
+
+function rerenderLoop(n) {
+  const loop = LOOPS.find(l => l.n === n);
+  document.getElementById('diagram' + n).innerHTML = isCircle(loop) ? makeCircleDiagram(loop) : makeRingDiagram(loop);
+  document.getElementById('detail' + n).innerHTML = buildDetailHTML(loop);
+}
+
+function buildDetailHTML(loop) {
+  const sel = SEL[loop.n];
+  if (sel == null) return '';
+  const T = loop.trades.length;
+  const prev = loop.trades[(sel - 1 + T) % T];
+  const get = parseAltName(prev[1]);
+  const send = parseAltName(loop.trades[sel][1]);
+  const getsLabel = esc(get.name) + (get.alt ? ' (alt)' : '');
+  const sendsLabel = esc(send.name) + (send.alt ? ' (alt)' : '');
+  return (
+    `<div class="detail-card">` +
+    `<div class="detail-top">` +
+    `<span class="detail-name">${esc(loop.trades[sel][0])}</span>` +
+    `<span class="detail-clear" onclick="clearSel(${loop.n})">clear &times;</span>` +
+    `</div>` +
+    `<div class="detail-grid">` +
+    `<span class="detail-label gets">gets</span>` +
+    `<span><span class="detail-game">${getsLabel}</span> <span class="detail-connector">from</span> <span class="detail-person gets">${esc(prev[0])}</span></span>` +
+    `<span class="detail-label gives">gives</span>` +
+    `<span><span class="detail-game">${sendsLabel}</span> <span class="detail-connector">to</span> <span class="detail-person gives">${esc(loop.trades[sel][2])}</span></span>` +
+    `</div>` +
+    `</div>`
+  );
 }
 
 // ── BUILD COVER ───────────────────────────────────────────────────────────────
