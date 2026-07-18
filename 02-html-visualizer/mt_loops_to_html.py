@@ -257,11 +257,11 @@ HTML_TEMPLATE = """\
   .cover-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 36px;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     max-width: 900px;
-    margin-bottom: 60px;
+    margin-bottom: 56px;
   }
 
   .cover-cell {
@@ -313,7 +313,7 @@ HTML_TEMPLATE = """\
     display: flex;
     align-items: baseline;
     gap: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 28px;
     padding-bottom: 20px;
     border-bottom: 1px solid var(--border);
   }
@@ -415,7 +415,7 @@ HTML_TEMPLATE = """\
   <h1 class="cover-title">%%COVER_TITLE%%</h1>
   <div class="cover-sub">%%COVER_STATS%%</div>
   <div class="cover-grid" id="coverGrid"></div>
-  <div class="scroll-hint">&#8595; &nbsp; scroll to explore each loop &nbsp; &#8595;</div>
+  <div class="scroll-hint">&#8595; &nbsp; scroll to explore &mdash; click any node for its trade &nbsp; &#8595;</div>
 </div>
 
 <div class="divider"></div>
