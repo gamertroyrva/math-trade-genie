@@ -436,9 +436,12 @@ const PALETTE = [
 ];
 
 function nodeColor(idx) { return PALETTE[idx % PALETTE.length]; }
-function isCircle(loop) { return loop.trades.length <= 20; }
+function isCircle(loop) { return loop.trades.length <= 24; }
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function parseAltName(s) {
+  return s.startsWith('Alt Name: ') ? { name: s.slice(10), alt: true } : { name: s, alt: false };
 }
 
 // ── COVER THUMBNAILS ─────────────────────────────────────────────────────────
