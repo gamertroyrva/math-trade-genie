@@ -552,178 +552,50 @@ function makeCircleDiagram(loop) {
   return parts.join('\\n');
 }
 
-// ── CAPSULE DIAGRAM ───────────────────────────────────────────────────────────
+// ── RING DIAGRAM (large loops) ────────────────────────────────────────────────
 
-function makeCapsuleDiagram(loop) {
-  // Design principle: the two semicircular caps must feel identical to the top and
-  // bottom of the gold-standard circle diagram (T=18-20, R=280).  Every dimension
-  // below flows from that constraint.
-
+function makeRingDiagram(loop) {
   const T = loop.trades.length;
-  const nodeR = 8;
-  const padX = 95;
-  const padY = 65;
+  const sel = SEL[loop.n];
+  const hasSel = sel != null;
+  const R = 300, pad = 90;
+  const sz = (R + pad) * 2;
+  const cx = sz / 2, cy = sz / 2;
+  const angles = loop.trades.map((_, i) => (2 * Math.PI * i / T) - Math.PI / 2);
 
-  // capR matches the circle diagram's maxR so cap node spacing is identical to the
-  // gold-standard circle's top/bottom arc spacing.
-  const capR = 280;
-
-  // svgW derived from capR: (capR + padX) * 2 = (280 + 95) * 2 = 750px.
-  // A narrower value would clip the caps or force a smaller capR.
-  const svgW = 750;
-
-  const minRailH = 50;
-
-  // Hard minimum arc-length between every adjacent node, caps and rails alike.
-  // 80px is a deliberate overcorrection to prove the spacing mechanism moves.
-  // The capsule grows as tall as needed — only height is unconstrained.
-  const minStep = 80;
-  const capPerim = 2 * Math.PI * capR;
-  const railH = Math.max(minRailH, (T * minStep - capPerim) / 2);
-  const perimeter = capPerim + 2 * railH;  // >= T * minStep by construction
-
-  // Arc-length between successive nodes — exactly minStep for typical large loops.
-  const step = perimeter / T;
-
-  const svgH = 2 * capR + railH + 2 * padY;
-  const cx = svgW / 2;
-  const cy = svgH / 2;
-  const topCY = cy - railH / 2;
-  const botCY = cy + railH / 2;
-
-  // Cumulative arc-length boundaries, clockwise from 12 o'clock:
-  //   0 → L1  : top-right quarter cap  (quarter of the top semicircle)
-  //   L1 → L2 : right rail             (straight down)
-  //   L2 → L3 : bottom cap             (full bottom semicircle, left-to-right)
-  //   L3 → L4 : left rail              (straight up)
-  //   L4 → perimeter : top-left quarter cap  (closes back to 12 o'clock)
-  const L1 = Math.PI * capR / 2;
-  const L2 = L1 + railH;
-  const L3 = L2 + Math.PI * capR;
-  const L4 = L3 + railH;
-
-  // (x, y) for arc-distance s along the capsule perimeter
-  function posAt(s) {
-    s = ((s % perimeter) + perimeter) % perimeter;
-    if (s <= L1) {
-      const theta = -Math.PI / 2 + s / capR;
-      return [cx + capR * Math.cos(theta), topCY + capR * Math.sin(theta)];
-    } else if (s <= L2) {
-      return [cx + capR, topCY + (s - L1)];
-    } else if (s <= L3) {
-      const theta = (s - L2) / capR;
-      return [cx + capR * Math.cos(theta), botCY + capR * Math.sin(theta)];
-    } else if (s <= L4) {
-      return [cx - capR, botCY - (s - L3)];
-    } else {
-      const theta = -Math.PI + (s - L4) / capR;
-      return [cx + capR * Math.cos(theta), topCY + capR * Math.sin(theta)];
-    }
-  }
-
-  // 0=top-right cap quarter, 1=right rail, 2=bottom cap, 3=left rail, 4=top-left cap quarter
-  function phaseOf(s) {
-    s = ((s % perimeter) + perimeter) % perimeter;
-    if (s <= L1) return 0;
-    if (s <= L2) return 1;
-    if (s <= L3) return 2;
-    if (s <= L4) return 3;
-    return 4;
-  }
-
-  // SVG path d-string following the capsule from arc-distance sa for arc-length len
-  function buildPath(sa, len) {
-    const sb = sa + len;
-    const [x0, y0] = posAt(sa);
-    let d = `M ${x0.toFixed(1)} ${y0.toFixed(1)}`;
-    const bounds = [0, L1, L2, L3, L4, perimeter,
-                    perimeter + L1, perimeter + L2, perimeter + L3, perimeter + L4, 2 * perimeter];
-    let cur = sa;
-    for (const b of bounds) {
-      if (b <= cur + 1e-9) continue;
-      if (b >= sb - 1e-9) break;
-      const [bx, by] = posAt(b);
-      const ph = phaseOf((cur + b) / 2);
-      d += (ph === 1 || ph === 3)
-        ? ` L ${bx.toFixed(1)} ${by.toFixed(1)}`
-        : ` A ${capR} ${capR} 0 0 1 ${bx.toFixed(1)} ${by.toFixed(1)}`;
-      cur = b;
-    }
-    const [ex, ey] = posAt(sb);
-    const ph = phaseOf((cur + sb) / 2);
-    d += (ph === 1 || ph === 3)
-      ? ` L ${ex.toFixed(1)} ${ey.toFixed(1)}`
-      : ` A ${capR} ${capR} 0 0 1 ${ex.toFixed(1)} ${ey.toFixed(1)}`;
-    return d;
-  }
-
-  const markerId = `arr${loop.n}`;
-  const clearance = nodeR + 4;
   let parts = [];
-  parts.push(`<svg width="100%" viewBox="0 0 ${Math.round(svgW)} ${Math.round(svgH)}" style="max-width:${Math.round(svgW)}px">`);
-  parts.push(`<defs><marker id="${markerId}" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto"><polygon points="0 0, 12 4, 0 8" fill="#cccccc" opacity="0.9"/></marker></defs>`);
+  parts.push(`<svg width="100%" viewBox="0 0 ${sz} ${sz}" style="max-width:${sz}px">`);
+  parts.push(`<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#222630" stroke-width="1"/>`);
+  parts.push(`<text x="${cx}" y="${cy - 14}" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="76" font-weight="700" fill="#1c212c">${T}</text>`);
+  parts.push(`<text x="${cx}" y="${cy + 28}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="3" fill="#2a3040">TRADES &middot; CLOCKWISE</text>`);
 
-  // Arrows: one arc-following path per trade, colored by sender
   for (let i = 0; i < T; i++) {
-    const len = step - 2 * clearance;
-    if (len <= 0) continue;
-    const d = buildPath(i * step + clearance, len);
-    parts.push(`<path d="${d}" fill="none" stroke="${nodeColor(i)}" stroke-width="1.5" opacity="0.6" marker-end="url(#${markerId})"/>`);
+    const px = (cx + R * Math.cos(angles[i])).toFixed(1);
+    const py = (cy + R * Math.sin(angles[i])).toFixed(1);
+    const isSel = sel === i;
+    const nbr = hasSel && (i === (sel + 1) % T || i === (sel - 1 + T) % T);
+    const r = isSel ? 9 : nbr ? 6.5 : 4.5;
+    const opacity = hasSel && !isSel && !nbr ? 0.3 : 0.95;
+    const stroke = isSel ? '#ffffff' : 'none';
+    parts.push(`<circle cx="${px}" cy="${py}" r="${r}" fill="${nodeColor(i)}" opacity="${opacity}" stroke="${stroke}" stroke-width="1.5"/>`);
   }
 
-  // Game labels — outside the track, at midpoint of each arc segment
-  for (let i = 0; i < T; i++) {
-    const sMid = i * step + step / 2;
-    const [mx, my] = posAt(sMid);
-    const ph = phaseOf(sMid);
-    const outsideDist = nodeR + 22;
-    let lx, ly, anchor;
-
-    if (ph === 1) {
-      lx = cx + capR + outsideDist; ly = my; anchor = 'start';
-    } else if (ph === 3) {
-      lx = cx - capR - outsideDist; ly = my; anchor = 'end';
-    } else {
-      const arcCY = (ph === 2) ? botCY : topCY;
-      const dx = mx - cx, dy = my - arcCY;
-      lx = cx + (dx / capR) * (capR + outsideDist);
-      ly = arcCY + (dy / capR) * (capR + outsideDist);
-      const cosA = dx / capR;
-      anchor = cosA > 0.2 ? 'start' : cosA < -0.2 ? 'end' : 'middle';
-    }
-
-    const game = loop.trades[i][1];
-    const label = game.length > 32 ? game.substring(0, 30) + '\\u2026' : game;
-    parts.push(`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dominant-baseline="central" font-family="Cormorant Garamond, serif" font-size="11" font-style="italic" fill="var(--text)" opacity="0.75">${esc(label)}</text>`);
+  if (hasSel) {
+    const cosA = Math.cos(angles[sel]);
+    const inward = Math.abs(cosA) > 0.55;
+    const lR = inward ? R - 20 : R + 20;
+    const lx = (cx + lR * Math.cos(angles[sel])).toFixed(1);
+    const ly = (cy + lR * Math.sin(angles[sel])).toFixed(1);
+    const aStart = inward ? cosA < 0 : cosA > 0;
+    const aEnd = inward ? cosA > 0 : cosA < 0;
+    const anchor = aStart ? 'start' : aEnd ? 'end' : 'middle';
+    parts.push(`<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="12" font-weight="500" fill="var(--gold2)">${esc(loop.trades[sel][0])}</text>`);
   }
 
-  // Nodes and person labels — person labels always on the inside of the track
   for (let i = 0; i < T; i++) {
-    const s = i * step;
-    const [px, py] = posAt(s);
-    const col = nodeColor(i);
-    const ph = phaseOf(s);
-    const insideDist = nodeR + 14;
-    let ux, uy, uAnchor;
-
-    if (ph === 1) {
-      // Right rail: inside = toward horizontal center
-      ux = px - insideDist; uy = py; uAnchor = 'end';
-    } else if (ph === 3) {
-      // Left rail: inside = toward horizontal center
-      ux = px + insideDist; uy = py; uAnchor = 'start';
-    } else {
-      // Cap: inside = toward cap center
-      const arcCY = (ph === 2) ? botCY : topCY;
-      const dx = px - cx, dy = py - arcCY;
-      ux = cx + (dx / capR) * (capR - insideDist);
-      uy = arcCY + (dy / capR) * (capR - insideDist);
-      const cosA = dx / capR;
-      uAnchor = cosA > 0.2 ? 'start' : cosA < -0.2 ? 'end' : 'middle';
-    }
-
-    parts.push(`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${nodeR}" fill="${col}" opacity="0.9" stroke="var(--bg)" stroke-width="2"/>`);
-    parts.push(`<text x="${ux.toFixed(1)}" y="${uy.toFixed(1)}" text-anchor="${uAnchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="9" font-weight="400" fill="${col}" opacity="0.9">${esc(loop.trades[i][0])}</text>`);
+    const px = (cx + R * Math.cos(angles[i])).toFixed(1);
+    const py = (cy + R * Math.sin(angles[i])).toFixed(1);
+    parts.push(`<circle cx="${px}" cy="${py}" r="10" fill="transparent" style="cursor:pointer" onclick="selectNode(${loop.n}, ${i})"/>`);
   }
 
   parts.push('</svg>');
