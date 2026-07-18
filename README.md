@@ -58,4 +58,13 @@ Each block can also be run standalone — see the usage line in its own docstrin
 run_genie.py            Interactive harness — chains the blocks together
 index.html              Hosted landing page for published visualizations
 samples/                Example input/output files for each block
+richmonds-most-unwanted/  Sibling tool (not part of the 0-3 pipeline) — see below
 ```
+
+## Sibling Tools
+
+**[Richmond's Most Unwanted — Rap Sheet Builder](richmonds-most-unwanted/README.md)**
+takes Most Wanted/Unwanted GeekList exports (not OLWLG results files) and
+builds a cross-trade Rap Sheet tracking which titles were Wanted/Unwanted in
+each trade. It shares no data contract with Blocks 0-3 and isn't chained
+into `run_genie.py` — run it standalone, once per trade, after the final run.
