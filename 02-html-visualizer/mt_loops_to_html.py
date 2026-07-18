@@ -435,6 +435,8 @@ const PALETTE = [
   '#b8a84b','#5abcc0'
 ];
 
+const SEL = {};
+
 function nodeColor(idx) { return PALETTE[idx % PALETTE.length]; }
 function isCircle(loop) { return loop.trades.length <= 24; }
 function esc(s) {
@@ -479,6 +481,8 @@ function makeCoverCircle(loop) {
 
 function makeCircleDiagram(loop) {
   const T = loop.trades.length;
+  const sel = SEL[loop.n];
+  const hasSel = sel != null;
   const labelSpace = 50;
   const minR = 120, maxR = 280;
   const R = Math.min(maxR, Math.max(minR, T * 16));
@@ -503,34 +507,45 @@ function makeCircleDiagram(loop) {
     const y1 = (cy + R * Math.sin(angles[i] + clearAngle)).toFixed(1);
     const x2 = (cx + R * Math.cos(angles[next] - clearAngle)).toFixed(1);
     const y2 = (cy + R * Math.sin(angles[next] - clearAngle)).toFixed(1);
-    parts.push(`<path d="M ${x1} ${y1} A ${R} ${R} 0 ${largeArc} 1 ${x2} ${y2}" fill="none" stroke="${nodeColor(i)}" stroke-width="1.5" opacity="0.6" marker-end="url(#${markerId})"/>`);
+    const hot = hasSel && (i === sel || next === sel);
+    const opacity = hot ? 1 : (hasSel ? 0.15 : 0.6);
+    const strokeWidth = hot ? 2.5 : 1.5;
+    parts.push(`<path d="M ${x1} ${y1} A ${R} ${R} 0 ${largeArc} 1 ${x2} ${y2}" fill="none" stroke="${nodeColor(i)}" stroke-width="${strokeWidth}" opacity="${opacity}" marker-end="url(#${markerId})"/>`);
   }
 
   for (let i = 0; i < T; i++) {
     const next = (i + 1) % T;
     let da = angles[next] - angles[i];
     if (da < 0) da += 2 * Math.PI;
+    const hot = hasSel && (i === sel || next === sel);
     const midAngle = angles[i] + da / 2;
     const labelR = R + nodeR + 22;
     const lx = (cx + labelR * Math.cos(midAngle)).toFixed(1);
     const ly = (cy + labelR * Math.sin(midAngle)).toFixed(1);
-    const game = loop.trades[i][1];
-    const label = game.length > 32 ? game.substring(0, 30) + '…' : game;
+    const game = parseAltName(loop.trades[i][1]);
+    const gameName = game.name + (game.alt ? ' (alt)' : '');
+    const label = gameName.length > 32 ? gameName.substring(0, 30) + '…' : gameName;
     const cosA = Math.cos(midAngle);
     const anchor = cosA > 0.3 ? 'start' : cosA < -0.3 ? 'end' : 'middle';
-    parts.push(`<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="central" font-family="Cormorant Garamond, serif" font-size="11" font-style="italic" fill="var(--text)" opacity="0.75">${esc(label)}</text>`);
+    const opacity = hot ? 1 : (hasSel ? 0.3 : 0.75);
+    parts.push(`<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="central" font-family="Cormorant Garamond, serif" font-size="11" font-style="italic" fill="var(--text)" opacity="${opacity}">${esc(label)}</text>`);
   }
 
   for (let i = 0; i < T; i++) {
     const col = nodeColor(i);
     const p = pts[i];
-    parts.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${nodeR}" fill="${col}" opacity="0.9" stroke="var(--bg)" stroke-width="2"/>`);
+    const isSel = sel === i;
+    const r = isSel ? nodeR + 3 : nodeR;
+    const opacity = hasSel && !isSel ? 0.55 : 0.9;
+    const stroke = isSel ? '#ffffff' : 'var(--bg)';
+    parts.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r}" fill="${col}" opacity="${opacity}" stroke="${stroke}" stroke-width="2" style="cursor:pointer" onclick="selectNode(${loop.n}, ${i})"/>`);
     const uLabelR = R - nodeR - 18;
     const ux = (cx + uLabelR * Math.cos(angles[i])).toFixed(1);
     const uy = (cy + uLabelR * Math.sin(angles[i])).toFixed(1);
     const cosA = Math.cos(angles[i]);
     const uAnchor = cosA > 0.2 ? 'start' : cosA < -0.2 ? 'end' : 'middle';
-    parts.push(`<text x="${ux}" y="${uy}" text-anchor="${uAnchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="9" font-weight="400" fill="${col}" opacity="0.9">${esc(loop.trades[i][0])}</text>`);
+    const uOpacity = hasSel && !isSel ? 0.4 : 0.9;
+    parts.push(`<text x="${ux}" y="${uy}" text-anchor="${uAnchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="9" font-weight="400" fill="${col}" opacity="${uOpacity}" style="cursor:pointer" onclick="selectNode(${loop.n}, ${i})">${esc(loop.trades[i][0])}</text>`);
   }
 
   parts.push('</svg>');
