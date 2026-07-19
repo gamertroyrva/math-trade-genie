@@ -177,7 +177,7 @@ HTML_TEMPLATE = """\
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>%%PAGE_TITLE%%</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
   :root {
     --bg:      #0a0c10;
@@ -515,7 +515,7 @@ function makeCircleDiagram(loop) {
     const label = game.length > 32 ? game.substring(0, 30) + '…' : game;
     const cosA = Math.cos(midAngle);
     const anchor = cosA > 0.3 ? 'start' : cosA < -0.3 ? 'end' : 'middle';
-    parts.push(`<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="central" font-family="Cormorant Garamond, serif" font-size="11" font-style="italic" fill="var(--text)" opacity="0.75">${esc(label)}</text>`);
+    parts.push(`<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="central" font-family="Cormorant Garamond, serif" font-size="13" font-weight="500" fill="var(--text)" opacity="0.75">${esc(label)}</text>`);
   }
 
   for (let i = 0; i < T; i++) {
@@ -527,7 +527,7 @@ function makeCircleDiagram(loop) {
     const uy = (cy + uLabelR * Math.sin(angles[i])).toFixed(1);
     const cosA = Math.cos(angles[i]);
     const uAnchor = cosA > 0.2 ? 'start' : cosA < -0.2 ? 'end' : 'middle';
-    parts.push(`<text x="${ux}" y="${uy}" text-anchor="${uAnchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="9" font-weight="400" fill="${col}" opacity="0.9">${esc(loop.trades[i][0])}</text>`);
+    parts.push(`<text x="${ux}" y="${uy}" text-anchor="${uAnchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" fill="${col}" opacity="0.9">${esc(loop.trades[i][0])}</text>`);
   }
 
   parts.push('</svg>');
@@ -676,7 +676,7 @@ function makeCapsuleDiagram(loop) {
 
     const game = loop.trades[i][1];
     const label = game.length > 32 ? game.substring(0, 30) + '\\u2026' : game;
-    parts.push(`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dominant-baseline="central" font-family="Cormorant Garamond, serif" font-size="11" font-style="italic" fill="var(--text)" opacity="0.75">${esc(label)}</text>`);
+    parts.push(`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dominant-baseline="central" font-family="Cormorant Garamond, serif" font-size="13" font-weight="500" fill="var(--text)" opacity="0.75">${esc(label)}</text>`);
   }
 
   // Nodes and person labels — person labels always on the inside of the track
@@ -705,7 +705,7 @@ function makeCapsuleDiagram(loop) {
     }
 
     parts.push(`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${nodeR}" fill="${col}" opacity="0.9" stroke="var(--bg)" stroke-width="2"/>`);
-    parts.push(`<text x="${ux.toFixed(1)}" y="${uy.toFixed(1)}" text-anchor="${uAnchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="9" font-weight="400" fill="${col}" opacity="0.9">${esc(loop.trades[i][0])}</text>`);
+    parts.push(`<text x="${ux.toFixed(1)}" y="${uy.toFixed(1)}" text-anchor="${uAnchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="11" font-weight="500" fill="${col}" opacity="0.9">${esc(loop.trades[i][0])}</text>`);
   }
 
   parts.push('</svg>');
