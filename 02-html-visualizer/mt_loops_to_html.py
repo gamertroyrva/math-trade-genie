@@ -474,6 +474,16 @@ HTML_TEMPLATE = """\
 
   .detail-person.gets { color: var(--teal); }
   .detail-person.gives { color: var(--gold); }
+
+  /* FOOTER */
+  .footer {
+    padding: 48px 40px 64px;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
 </style>
 </head>
 <body>
@@ -488,6 +498,7 @@ HTML_TEMPLATE = """\
 
 <div class="divider"></div>
 <div id="loopsWrapper"></div>
+<div class="footer" id="footer"></div>
 
 <script>
 %%LOOPS_DATA%%
@@ -729,16 +740,14 @@ function buildLoops() {
     section.className = 'loop-section';
     section.id = 'loop' + loop.n;
     const circle = isCircle(loop);
-    const badge = circle ? 'Circle Diagram' : 'Capsule Diagram';
     section.innerHTML =
       `<div class="loop-header">` +
       `<div class="loop-num">${String(loop.n).padStart(2, '0')}</div>` +
       `<div><div class="loop-name">Loop ${loop.n}</div>` +
       `<div class="loop-meta">${loop.trades.length} trades</div></div>` +
-      `<div class="loop-badge">${badge}</div></div>` +
-      (circle
-        ? `<div class="diagram-wrap">${makeCircleDiagram(loop)}</div>`
-        : `<div class="diagram-wrap">${makeCapsuleDiagram(loop)}</div>`);
+      `<div class="loop-badge">Click a node</div></div>` +
+      `<div class="diagram-wrap" id="diagram${loop.n}">${circle ? makeCircleDiagram(loop) : makeRingDiagram(loop)}</div>` +
+      `<div class="detail-wrap" id="detail${loop.n}">${buildDetailHTML(loop)}</div>`;
     wrapper.appendChild(section);
     if (idx < LOOPS.length - 1) {
       const div = document.createElement('div');
@@ -748,8 +757,15 @@ function buildLoops() {
   });
 }
 
+function buildFooter() {
+  const el = document.getElementById('footer');
+  const titleText = document.querySelector('.cover-title').textContent;
+  el.innerHTML = `${esc(titleText)} &middot; <a href="#cover">back to top</a>`;
+}
+
 buildCover();
 buildLoops();
+buildFooter();
 </script>
 </body>
 </html>"""
