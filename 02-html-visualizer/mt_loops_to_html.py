@@ -257,11 +257,11 @@ HTML_TEMPLATE = """\
   .cover-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 36px;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
     max-width: 900px;
-    margin-bottom: 60px;
+    margin-bottom: 56px;
   }
 
   .cover-cell {
@@ -313,7 +313,7 @@ HTML_TEMPLATE = """\
     display: flex;
     align-items: baseline;
     gap: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 28px;
     padding-bottom: 20px;
     border-bottom: 1px solid var(--border);
   }
@@ -406,6 +406,84 @@ HTML_TEMPLATE = """\
     color: var(--teal);
     font-weight: 500;
   }
+
+  /* DETAIL CARD */
+  .detail-wrap { display: flex; justify-content: center; }
+
+  .detail-card {
+    margin: 20px auto 0;
+    max-width: 560px;
+    background: #10131a;
+    border: 1px solid #2a3040;
+    border-radius: 8px;
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .detail-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .detail-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--gold2);
+  }
+
+  .detail-clear {
+    cursor: pointer;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .detail-clear:hover { color: var(--text); }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 8px 14px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .detail-label {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding-top: 3px;
+  }
+
+  .detail-label.gets { color: var(--teal); }
+  .detail-label.gives { color: var(--gold); }
+
+  .detail-game {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-style: italic;
+  }
+
+  .detail-connector { color: var(--dim); }
+
+  .detail-person.gets { color: var(--teal); }
+  .detail-person.gives { color: var(--gold); }
+
+  /* FOOTER */
+  .footer {
+    padding: 48px 40px 64px;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
 </style>
 </head>
 <body>
@@ -415,11 +493,12 @@ HTML_TEMPLATE = """\
   <h1 class="cover-title">%%COVER_TITLE%%</h1>
   <div class="cover-sub">%%COVER_STATS%%</div>
   <div class="cover-grid" id="coverGrid"></div>
-  <div class="scroll-hint">&#8595; &nbsp; scroll to explore each loop &nbsp; &#8595;</div>
+  <div class="scroll-hint">&#8595; &nbsp; scroll to explore &mdash; click any node for its trade &nbsp; &#8595;</div>
 </div>
 
 <div class="divider"></div>
 <div id="loopsWrapper"></div>
+<div class="footer" id="footer"></div>
 
 <script>
 %%LOOPS_DATA%%
@@ -435,38 +514,34 @@ const PALETTE = [
   '#b8a84b','#5abcc0'
 ];
 
+const SEL = {};
+
 function nodeColor(idx) { return PALETTE[idx % PALETTE.length]; }
-function isCircle(loop) { return loop.trades.length <= 20; }
+function isCircle(loop) { return loop.trades.length <= 24; }
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function parseAltName(s) {
+  return s.startsWith('Alt Name: ') ? { name: s.slice(10), alt: true } : { name: s, alt: false };
 }
 
 // ── COVER THUMBNAILS ─────────────────────────────────────────────────────────
 
-function makeCoverCircle(loop) {
+function makeCoverThumb(loop) {
   const T = loop.trades.length;
-  const minSz = 50, maxSz = 155;
-  const sz = Math.round(minSz + (T / MAX_LOOP_SIZE) * (maxSz - minSz));
-  const R = sz / 2 - 6;
-  const cx = sz / 2, cy = sz / 2;
-  const nr = Math.max(2, Math.round(R * 0.12));
+  const sz = Math.round(50 + (T / MAX_LOOP_SIZE) * 105);
+  const R0 = sz / 2 - 6;
+  const density = Math.max(2, Math.floor((2 * Math.PI * R0 / T) / 1.6));
+  const nr = Math.max(2, Math.min(Math.round(R0 * 0.12), density));
+  const R = sz / 2 - nr - 3, cx = sz / 2, cy = sz / 2;
   const angles = loop.trades.map((_, i) => (2 * Math.PI * i / T) - Math.PI / 2);
-  const pts = angles.map(a => ({ x: cx + R * Math.cos(a), y: cy + R * Math.sin(a) }));
 
   let parts = [`<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}">`];
+  parts.push(`<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#222630" stroke-width="1"/>`);
   for (let i = 0; i < T; i++) {
-    const next = (i + 1) % T;
-    let da = angles[next] - angles[i];
-    if (da < 0) da += 2 * Math.PI;
-    const largeArc = da > Math.PI ? 1 : 0;
-    const x1 = cx + R * Math.cos(angles[i]);
-    const y1 = cy + R * Math.sin(angles[i]);
-    const x2 = cx + R * Math.cos(angles[next]);
-    const y2 = cy + R * Math.sin(angles[next]);
-    parts.push(`<path d="M ${x1.toFixed(1)} ${y1.toFixed(1)} A ${R} ${R} 0 ${largeArc} 1 ${x2.toFixed(1)} ${y2.toFixed(1)}" fill="none" stroke="${nodeColor(i)}" stroke-width="1" opacity="0.5"/>`);
-  }
-  for (let i = 0; i < T; i++) {
-    parts.push(`<circle cx="${pts[i].x.toFixed(1)}" cy="${pts[i].y.toFixed(1)}" r="${nr}" fill="${nodeColor(i)}" opacity="0.9"/>`);
+    const x = (cx + R * Math.cos(angles[i])).toFixed(1);
+    const y = (cy + R * Math.sin(angles[i])).toFixed(1);
+    parts.push(`<circle cx="${x}" cy="${y}" r="${nr}" fill="${nodeColor(i)}" opacity="0.9"/>`);
   }
   parts.push('</svg>');
   return parts.join('');
@@ -476,6 +551,8 @@ function makeCoverCircle(loop) {
 
 function makeCircleDiagram(loop) {
   const T = loop.trades.length;
+  const sel = SEL[loop.n];
+  const hasSel = sel != null;
   const labelSpace = 50;
   const minR = 120, maxR = 280;
   const R = Math.min(maxR, Math.max(minR, T * 16));
@@ -500,216 +577,142 @@ function makeCircleDiagram(loop) {
     const y1 = (cy + R * Math.sin(angles[i] + clearAngle)).toFixed(1);
     const x2 = (cx + R * Math.cos(angles[next] - clearAngle)).toFixed(1);
     const y2 = (cy + R * Math.sin(angles[next] - clearAngle)).toFixed(1);
-    parts.push(`<path d="M ${x1} ${y1} A ${R} ${R} 0 ${largeArc} 1 ${x2} ${y2}" fill="none" stroke="${nodeColor(i)}" stroke-width="1.5" opacity="0.6" marker-end="url(#${markerId})"/>`);
+    const hot = hasSel && (i === sel || next === sel);
+    const opacity = hot ? 1 : (hasSel ? 0.15 : 0.6);
+    const strokeWidth = hot ? 2.5 : 1.5;
+    parts.push(`<path d="M ${x1} ${y1} A ${R} ${R} 0 ${largeArc} 1 ${x2} ${y2}" fill="none" stroke="${nodeColor(i)}" stroke-width="${strokeWidth}" opacity="${opacity}" marker-end="url(#${markerId})"/>`);
   }
 
   for (let i = 0; i < T; i++) {
     const next = (i + 1) % T;
     let da = angles[next] - angles[i];
     if (da < 0) da += 2 * Math.PI;
+    const hot = hasSel && (i === sel || next === sel);
     const midAngle = angles[i] + da / 2;
     const labelR = R + nodeR + 22;
     const lx = (cx + labelR * Math.cos(midAngle)).toFixed(1);
     const ly = (cy + labelR * Math.sin(midAngle)).toFixed(1);
-    const game = loop.trades[i][1];
-    const label = game.length > 32 ? game.substring(0, 30) + '…' : game;
+    const game = parseAltName(loop.trades[i][1]);
+    const gameName = game.name + (game.alt ? ' (alt)' : '');
+    const label = gameName.length > 32 ? gameName.substring(0, 30) + '…' : gameName;
     const cosA = Math.cos(midAngle);
     const anchor = cosA > 0.3 ? 'start' : cosA < -0.3 ? 'end' : 'middle';
-    parts.push(`<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="central" font-family="Cormorant Garamond, serif" font-size="11" font-style="italic" fill="var(--text)" opacity="0.75">${esc(label)}</text>`);
+    const opacity = hot ? 1 : (hasSel ? 0.3 : 0.75);
+    parts.push(`<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="central" font-family="Cormorant Garamond, serif" font-size="11" font-style="italic" fill="var(--text)" opacity="${opacity}">${esc(label)}</text>`);
   }
 
   for (let i = 0; i < T; i++) {
     const col = nodeColor(i);
     const p = pts[i];
-    parts.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${nodeR}" fill="${col}" opacity="0.9" stroke="var(--bg)" stroke-width="2"/>`);
+    const isSel = sel === i;
+    const r = isSel ? nodeR + 3 : nodeR;
+    const opacity = hasSel && !isSel ? 0.55 : 0.9;
+    const stroke = isSel ? '#ffffff' : 'var(--bg)';
+    parts.push(`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r}" fill="${col}" opacity="${opacity}" stroke="${stroke}" stroke-width="2" style="cursor:pointer" onclick="selectNode(${loop.n}, ${i})"/>`);
     const uLabelR = R - nodeR - 18;
     const ux = (cx + uLabelR * Math.cos(angles[i])).toFixed(1);
     const uy = (cy + uLabelR * Math.sin(angles[i])).toFixed(1);
     const cosA = Math.cos(angles[i]);
     const uAnchor = cosA > 0.2 ? 'start' : cosA < -0.2 ? 'end' : 'middle';
-    parts.push(`<text x="${ux}" y="${uy}" text-anchor="${uAnchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="9" font-weight="400" fill="${col}" opacity="0.9">${esc(loop.trades[i][0])}</text>`);
+    const uOpacity = hasSel && !isSel ? 0.4 : 0.9;
+    parts.push(`<text x="${ux}" y="${uy}" text-anchor="${uAnchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="9" font-weight="400" fill="${col}" opacity="${uOpacity}" style="cursor:pointer" onclick="selectNode(${loop.n}, ${i})">${esc(loop.trades[i][0])}</text>`);
   }
 
   parts.push('</svg>');
   return parts.join('\\n');
 }
 
-// ── CAPSULE DIAGRAM ───────────────────────────────────────────────────────────
+// ── RING DIAGRAM (large loops) ────────────────────────────────────────────────
 
-function makeCapsuleDiagram(loop) {
-  // Design principle: the two semicircular caps must feel identical to the top and
-  // bottom of the gold-standard circle diagram (T=18-20, R=280).  Every dimension
-  // below flows from that constraint.
-
+function makeRingDiagram(loop) {
   const T = loop.trades.length;
-  const nodeR = 8;
-  const padX = 95;
-  const padY = 65;
+  const sel = SEL[loop.n];
+  const hasSel = sel != null;
+  const R = 300, pad = 90;
+  const sz = (R + pad) * 2;
+  const cx = sz / 2, cy = sz / 2;
+  const angles = loop.trades.map((_, i) => (2 * Math.PI * i / T) - Math.PI / 2);
 
-  // capR matches the circle diagram's maxR so cap node spacing is identical to the
-  // gold-standard circle's top/bottom arc spacing.
-  const capR = 280;
-
-  // svgW derived from capR: (capR + padX) * 2 = (280 + 95) * 2 = 750px.
-  // A narrower value would clip the caps or force a smaller capR.
-  const svgW = 750;
-
-  const minRailH = 50;
-
-  // Hard minimum arc-length between every adjacent node, caps and rails alike.
-  // 80px is a deliberate overcorrection to prove the spacing mechanism moves.
-  // The capsule grows as tall as needed — only height is unconstrained.
-  const minStep = 80;
-  const capPerim = 2 * Math.PI * capR;
-  const railH = Math.max(minRailH, (T * minStep - capPerim) / 2);
-  const perimeter = capPerim + 2 * railH;  // >= T * minStep by construction
-
-  // Arc-length between successive nodes — exactly minStep for typical large loops.
-  const step = perimeter / T;
-
-  const svgH = 2 * capR + railH + 2 * padY;
-  const cx = svgW / 2;
-  const cy = svgH / 2;
-  const topCY = cy - railH / 2;
-  const botCY = cy + railH / 2;
-
-  // Cumulative arc-length boundaries, clockwise from 12 o'clock:
-  //   0 → L1  : top-right quarter cap  (quarter of the top semicircle)
-  //   L1 → L2 : right rail             (straight down)
-  //   L2 → L3 : bottom cap             (full bottom semicircle, left-to-right)
-  //   L3 → L4 : left rail              (straight up)
-  //   L4 → perimeter : top-left quarter cap  (closes back to 12 o'clock)
-  const L1 = Math.PI * capR / 2;
-  const L2 = L1 + railH;
-  const L3 = L2 + Math.PI * capR;
-  const L4 = L3 + railH;
-
-  // (x, y) for arc-distance s along the capsule perimeter
-  function posAt(s) {
-    s = ((s % perimeter) + perimeter) % perimeter;
-    if (s <= L1) {
-      const theta = -Math.PI / 2 + s / capR;
-      return [cx + capR * Math.cos(theta), topCY + capR * Math.sin(theta)];
-    } else if (s <= L2) {
-      return [cx + capR, topCY + (s - L1)];
-    } else if (s <= L3) {
-      const theta = (s - L2) / capR;
-      return [cx + capR * Math.cos(theta), botCY + capR * Math.sin(theta)];
-    } else if (s <= L4) {
-      return [cx - capR, botCY - (s - L3)];
-    } else {
-      const theta = -Math.PI + (s - L4) / capR;
-      return [cx + capR * Math.cos(theta), topCY + capR * Math.sin(theta)];
-    }
-  }
-
-  // 0=top-right cap quarter, 1=right rail, 2=bottom cap, 3=left rail, 4=top-left cap quarter
-  function phaseOf(s) {
-    s = ((s % perimeter) + perimeter) % perimeter;
-    if (s <= L1) return 0;
-    if (s <= L2) return 1;
-    if (s <= L3) return 2;
-    if (s <= L4) return 3;
-    return 4;
-  }
-
-  // SVG path d-string following the capsule from arc-distance sa for arc-length len
-  function buildPath(sa, len) {
-    const sb = sa + len;
-    const [x0, y0] = posAt(sa);
-    let d = `M ${x0.toFixed(1)} ${y0.toFixed(1)}`;
-    const bounds = [0, L1, L2, L3, L4, perimeter,
-                    perimeter + L1, perimeter + L2, perimeter + L3, perimeter + L4, 2 * perimeter];
-    let cur = sa;
-    for (const b of bounds) {
-      if (b <= cur + 1e-9) continue;
-      if (b >= sb - 1e-9) break;
-      const [bx, by] = posAt(b);
-      const ph = phaseOf((cur + b) / 2);
-      d += (ph === 1 || ph === 3)
-        ? ` L ${bx.toFixed(1)} ${by.toFixed(1)}`
-        : ` A ${capR} ${capR} 0 0 1 ${bx.toFixed(1)} ${by.toFixed(1)}`;
-      cur = b;
-    }
-    const [ex, ey] = posAt(sb);
-    const ph = phaseOf((cur + sb) / 2);
-    d += (ph === 1 || ph === 3)
-      ? ` L ${ex.toFixed(1)} ${ey.toFixed(1)}`
-      : ` A ${capR} ${capR} 0 0 1 ${ex.toFixed(1)} ${ey.toFixed(1)}`;
-    return d;
-  }
-
-  const markerId = `arr${loop.n}`;
-  const clearance = nodeR + 4;
   let parts = [];
-  parts.push(`<svg width="100%" viewBox="0 0 ${Math.round(svgW)} ${Math.round(svgH)}" style="max-width:${Math.round(svgW)}px">`);
-  parts.push(`<defs><marker id="${markerId}" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="8" refX="12" refY="4" orient="auto"><polygon points="0 0, 12 4, 0 8" fill="#cccccc" opacity="0.9"/></marker></defs>`);
+  parts.push(`<svg width="100%" viewBox="0 0 ${sz} ${sz}" style="max-width:${sz}px">`);
+  parts.push(`<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#222630" stroke-width="1"/>`);
+  parts.push(`<text x="${cx}" y="${cy - 14}" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="76" font-weight="700" fill="#1c212c">${T}</text>`);
+  parts.push(`<text x="${cx}" y="${cy + 28}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" letter-spacing="3" fill="#2a3040">TRADES &middot; CLOCKWISE</text>`);
 
-  // Arrows: one arc-following path per trade, colored by sender
   for (let i = 0; i < T; i++) {
-    const len = step - 2 * clearance;
-    if (len <= 0) continue;
-    const d = buildPath(i * step + clearance, len);
-    parts.push(`<path d="${d}" fill="none" stroke="${nodeColor(i)}" stroke-width="1.5" opacity="0.6" marker-end="url(#${markerId})"/>`);
+    const px = (cx + R * Math.cos(angles[i])).toFixed(1);
+    const py = (cy + R * Math.sin(angles[i])).toFixed(1);
+    const isSel = sel === i;
+    const nbr = hasSel && (i === (sel + 1) % T || i === (sel - 1 + T) % T);
+    const r = isSel ? 9 : nbr ? 6.5 : 4.5;
+    const opacity = hasSel && !isSel && !nbr ? 0.3 : 0.95;
+    const stroke = isSel ? '#ffffff' : 'none';
+    parts.push(`<circle cx="${px}" cy="${py}" r="${r}" fill="${nodeColor(i)}" opacity="${opacity}" stroke="${stroke}" stroke-width="1.5"/>`);
   }
 
-  // Game labels — outside the track, at midpoint of each arc segment
-  for (let i = 0; i < T; i++) {
-    const sMid = i * step + step / 2;
-    const [mx, my] = posAt(sMid);
-    const ph = phaseOf(sMid);
-    const outsideDist = nodeR + 22;
-    let lx, ly, anchor;
-
-    if (ph === 1) {
-      lx = cx + capR + outsideDist; ly = my; anchor = 'start';
-    } else if (ph === 3) {
-      lx = cx - capR - outsideDist; ly = my; anchor = 'end';
-    } else {
-      const arcCY = (ph === 2) ? botCY : topCY;
-      const dx = mx - cx, dy = my - arcCY;
-      lx = cx + (dx / capR) * (capR + outsideDist);
-      ly = arcCY + (dy / capR) * (capR + outsideDist);
-      const cosA = dx / capR;
-      anchor = cosA > 0.2 ? 'start' : cosA < -0.2 ? 'end' : 'middle';
-    }
-
-    const game = loop.trades[i][1];
-    const label = game.length > 32 ? game.substring(0, 30) + '\\u2026' : game;
-    parts.push(`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" dominant-baseline="central" font-family="Cormorant Garamond, serif" font-size="11" font-style="italic" fill="var(--text)" opacity="0.75">${esc(label)}</text>`);
+  if (hasSel) {
+    const cosA = Math.cos(angles[sel]);
+    const inward = Math.abs(cosA) > 0.55;
+    const lR = inward ? R - 20 : R + 20;
+    const lx = (cx + lR * Math.cos(angles[sel])).toFixed(1);
+    const ly = (cy + lR * Math.sin(angles[sel])).toFixed(1);
+    const aStart = inward ? cosA < 0 : cosA > 0;
+    const aEnd = inward ? cosA > 0 : cosA < 0;
+    const anchor = aStart ? 'start' : aEnd ? 'end' : 'middle';
+    parts.push(`<text x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="12" font-weight="500" fill="var(--gold2)">${esc(loop.trades[sel][0])}</text>`);
   }
 
-  // Nodes and person labels — person labels always on the inside of the track
   for (let i = 0; i < T; i++) {
-    const s = i * step;
-    const [px, py] = posAt(s);
-    const col = nodeColor(i);
-    const ph = phaseOf(s);
-    const insideDist = nodeR + 14;
-    let ux, uy, uAnchor;
-
-    if (ph === 1) {
-      // Right rail: inside = toward horizontal center
-      ux = px - insideDist; uy = py; uAnchor = 'end';
-    } else if (ph === 3) {
-      // Left rail: inside = toward horizontal center
-      ux = px + insideDist; uy = py; uAnchor = 'start';
-    } else {
-      // Cap: inside = toward cap center
-      const arcCY = (ph === 2) ? botCY : topCY;
-      const dx = px - cx, dy = py - arcCY;
-      ux = cx + (dx / capR) * (capR - insideDist);
-      uy = arcCY + (dy / capR) * (capR - insideDist);
-      const cosA = dx / capR;
-      uAnchor = cosA > 0.2 ? 'start' : cosA < -0.2 ? 'end' : 'middle';
-    }
-
-    parts.push(`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${nodeR}" fill="${col}" opacity="0.9" stroke="var(--bg)" stroke-width="2"/>`);
-    parts.push(`<text x="${ux.toFixed(1)}" y="${uy.toFixed(1)}" text-anchor="${uAnchor}" dominant-baseline="central" font-family="JetBrains Mono, monospace" font-size="9" font-weight="400" fill="${col}" opacity="0.9">${esc(loop.trades[i][0])}</text>`);
+    const px = (cx + R * Math.cos(angles[i])).toFixed(1);
+    const py = (cy + R * Math.sin(angles[i])).toFixed(1);
+    parts.push(`<circle cx="${px}" cy="${py}" r="10" fill="transparent" style="cursor:pointer" onclick="selectNode(${loop.n}, ${i})"/>`);
   }
 
   parts.push('</svg>');
   return parts.join('\\n');
+}
+
+// ── SELECTION ENGINE ─────────────────────────────────────────────────────────
+
+function selectNode(n, i) {
+  SEL[n] = SEL[n] === i ? null : i;
+  rerenderLoop(n);
+}
+
+function clearSel(n) {
+  SEL[n] = null;
+  rerenderLoop(n);
+}
+
+function rerenderLoop(n) {
+  const loop = LOOPS.find(l => l.n === n);
+  document.getElementById('diagram' + n).innerHTML = isCircle(loop) ? makeCircleDiagram(loop) : makeRingDiagram(loop);
+  document.getElementById('detail' + n).innerHTML = buildDetailHTML(loop);
+}
+
+function buildDetailHTML(loop) {
+  const sel = SEL[loop.n];
+  if (sel == null) return '';
+  const T = loop.trades.length;
+  const prev = loop.trades[(sel - 1 + T) % T];
+  const get = parseAltName(prev[1]);
+  const send = parseAltName(loop.trades[sel][1]);
+  const getsLabel = esc(get.name) + (get.alt ? ' (alt)' : '');
+  const sendsLabel = esc(send.name) + (send.alt ? ' (alt)' : '');
+  return (
+    `<div class="detail-card">` +
+    `<div class="detail-top">` +
+    `<span class="detail-name">${esc(loop.trades[sel][0])}</span>` +
+    `<span class="detail-clear" onclick="clearSel(${loop.n})">clear &times;</span>` +
+    `</div>` +
+    `<div class="detail-grid">` +
+    `<span class="detail-label gets">gets</span>` +
+    `<span><span class="detail-game">${getsLabel}</span> <span class="detail-connector">from</span> <span class="detail-person gets">${esc(prev[0])}</span></span>` +
+    `<span class="detail-label gives">gives</span>` +
+    `<span><span class="detail-game">${sendsLabel}</span> <span class="detail-connector">to</span> <span class="detail-person gives">${esc(loop.trades[sel][2])}</span></span>` +
+    `</div>` +
+    `</div>`
+  );
 }
 
 // ── BUILD COVER ───────────────────────────────────────────────────────────────
@@ -719,7 +722,7 @@ function buildCover() {
   LOOPS.forEach(loop => {
     const cell = document.createElement('div');
     cell.className = 'cover-cell';
-    cell.innerHTML = makeCoverCircle(loop) +
+    cell.innerHTML = makeCoverThumb(loop) +
       `<span class="cover-cell-label">Loop ${loop.n} &middot; ${loop.trades.length}</span>`;
     cell.addEventListener('click', () => {
       document.getElementById('loop' + loop.n).scrollIntoView({ behavior: 'smooth' });
@@ -737,16 +740,14 @@ function buildLoops() {
     section.className = 'loop-section';
     section.id = 'loop' + loop.n;
     const circle = isCircle(loop);
-    const badge = circle ? 'Circle Diagram' : 'Capsule Diagram';
     section.innerHTML =
       `<div class="loop-header">` +
       `<div class="loop-num">${String(loop.n).padStart(2, '0')}</div>` +
       `<div><div class="loop-name">Loop ${loop.n}</div>` +
       `<div class="loop-meta">${loop.trades.length} trades</div></div>` +
-      `<div class="loop-badge">${badge}</div></div>` +
-      (circle
-        ? `<div class="diagram-wrap">${makeCircleDiagram(loop)}</div>`
-        : `<div class="diagram-wrap">${makeCapsuleDiagram(loop)}</div>`);
+      `<div class="loop-badge">Click a node</div></div>` +
+      `<div class="diagram-wrap" id="diagram${loop.n}">${circle ? makeCircleDiagram(loop) : makeRingDiagram(loop)}</div>` +
+      `<div class="detail-wrap" id="detail${loop.n}">${buildDetailHTML(loop)}</div>`;
     wrapper.appendChild(section);
     if (idx < LOOPS.length - 1) {
       const div = document.createElement('div');
@@ -756,8 +757,15 @@ function buildLoops() {
   });
 }
 
+function buildFooter() {
+  const el = document.getElementById('footer');
+  const titleText = document.querySelector('.cover-title').textContent;
+  el.innerHTML = `${esc(titleText)} &middot; <a href="#cover">back to top</a>`;
+}
+
 buildCover();
 buildLoops();
+buildFooter();
 </script>
 </body>
 </html>"""
