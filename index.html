@@ -239,9 +239,9 @@
 <body>
 
 <div id="cover">
-  <div class="cover-eyebrow">Practice Run - Thursday, August 27 at 6 AM</div>
+  <div class="cover-eyebrow">Final Run - Wednesday, September 2 at 6 AM</div>
   <h1 class="cover-title">RVA 2026 Mock Trade - Atlas Trade</h1>
-  <div class="cover-sub">20 total trades &nbsp;&middot;&nbsp; 3 loops &nbsp;&middot;&nbsp; 5 participants</div>
+  <div class="cover-sub">25 total trades &nbsp;&middot;&nbsp; 4 loops &nbsp;&middot;&nbsp; 7 participants</div>
   <div class="cover-grid" id="coverGrid"></div>
   <div class="scroll-hint">&#8595; &nbsp; scroll to explore each loop &nbsp; &#8595;</div>
 </div>
@@ -252,37 +252,44 @@
 <script>
 const LOOPS = [
   { n: 1, trades: [
-    ["gamertroyrva", "Global Mogul", "thecookiecats"],
-    ["thecookiecats", "For Sale (Gryphon Games English  travel edition 2008)", "gamertroyrva"]
+    ["bushaaya", "1066, Tears to Many Mothers: The Battle of Hastings", "thecookiecats"],
+    ["thecookiecats", "Agricola: Farmers of the Moor", "alexandraaplus"],
+    ["alexandraaplus", "Mass Transit", "thecookiecats"],
+    ["thecookiecats", "Airlines Europe", "bushaaya"]
   ]},
   { n: 2, trades: [
-    ["gamertroyrva", "Alt Name: $10 (Venmo/PayPal)", "toucan40"],
-    ["toucan40", "Arkham Horror: The Card Game", "thecookiecats"],
-    ["thecookiecats", "Ra (Überplay edition 2005)", "gamertroyrva"]
-  ]},
-  { n: 3, trades: [
     ["gamertroyrva", "Machi Koro", "thecookiecats"],
-    ["thecookiecats", "Trails (English edition)", "alexandraaplus"],
-    ["alexandraaplus", "Evolution: Climate", "thecookiecats"],
-    ["thecookiecats", "Acquire (Avalon Hill (Hasbro) edition)", "usacelt"],
-    ["usacelt", "Armageddon", "thecookiecats"],
-    ["thecookiecats", "Medina (Second Edition)", "alexandraaplus"],
-    ["alexandraaplus", "Cytosis: A Cell Biology Board Game", "thecookiecats"],
-    ["thecookiecats", "Ra (Rio Grande / alea English first edition)", "alexandraaplus"],
-    ["alexandraaplus", "At the Gates of Loyang", "thecookiecats"],
-    ["thecookiecats", "Fury of Dracula (Second Edition) (Fantasy Flight edition)", "toucan40"],
-    ["toucan40", "A Game of Thrones Collectible Card Game", "thecookiecats"],
-    ["thecookiecats", "Tic Tac Trek (English edition)", "alexandraaplus"],
-    ["alexandraaplus", "Mass Transit", "thecookiecats"],
+    ["thecookiecats", "For Sale (Gryphon Games English  travel edition 2008)", "gamertroyrva"],
+    ["gamertroyrva", "Global Mogul", "thecookiecats"],
     ["thecookiecats", "Eurorails", "alexandraaplus"],
     ["alexandraaplus", "Alt Name: $20", "gamertroyrva"]
+  ]},
+  { n: 3, trades: [
+    ["thecookiecats", "Acquire (Avalon Hill (Hasbro) edition)", "usacelt"],
+    ["usacelt", "Armageddon", "thecookiecats"],
+    ["thecookiecats", "Fury of Dracula (Second Edition) (Fantasy Flight edition)", "toucan40"],
+    ["toucan40", "A Game of Thrones Collectible Card Game", "thecookiecats"],
+    ["thecookiecats", "Trails (English edition)", "alexandraaplus"],
+    ["alexandraaplus", "Evolution: Climate", "thecookiecats"]
+  ]},
+  { n: 4, trades: [
+    ["bushaaya", "Ankh: Gods of Egypt", "jk_riki"],
+    ["jk_riki", "Massive Darkness", "toucan40"],
+    ["toucan40", "Pandemic Legacy: Season 2", "alexandraaplus"],
+    ["alexandraaplus", "Cytosis: A Cell Biology Board Game", "thecookiecats"],
+    ["thecookiecats", "Ra (Überplay edition 2005)", "gamertroyrva"],
+    ["gamertroyrva", "Alt Name: $10 (Venmo/PayPal)", "toucan40"],
+    ["toucan40", "Arkham Horror: The Card Game", "thecookiecats"],
+    ["thecookiecats", "Ra (Rio Grande / alea English first edition)", "alexandraaplus"],
+    ["alexandraaplus", "At the Gates of Loyang", "thecookiecats"],
+    ["thecookiecats", "Battlestar Galactica: The Board Game", "bushaaya"]
   ]},
 ];
 
 // LOOPS is already sorted smallest-to-largest and numbered sequentially (1, 2, 3...)
 // by the generator script. No re-sort or re-numbering needed.
 
-const MAX_LOOP_SIZE = 15;
+const MAX_LOOP_SIZE = 10;
 
 const PALETTE = [
   '#c8a84b','#3db8c0','#c05a6a','#7a9e6a','#8b7ab8',
